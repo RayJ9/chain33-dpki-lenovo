@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "ethers": "^5.7.2",
+    "global": "^4.4.0",
+    "http-server": "^14.1.1",
+    "nedb": "^1.8.0",
+    "punycode": "^2.3.1",
+    "web3": "1.7.0"
+  },
+  "devDependencies": {
+    "@types/nedb": "^1.8.16"
+  }
+}

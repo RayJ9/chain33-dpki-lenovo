@@ -1,0 +1,336 @@
+INFO: 2024/05/13 15:52:22 [core] parsed scheme: ""
+INFO: 2024/05/13 15:52:22 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/13 15:52:22 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/13 15:52:22 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/13 15:52:22 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/13 15:52:22 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/13 15:52:22 [core] pickfirstBalancer: UpdateSubConnState: 0xc000d949f0, {CONNECTING <nil>}
+INFO: 2024/05/13 15:52:22 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/13 15:52:22 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/13 15:52:22 [core] parsed scheme: ""
+INFO: 2024/05/13 15:52:22 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/13 15:52:22 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/13 15:52:22 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/13 15:52:22 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/13 15:52:22 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/13 15:52:22 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/13 15:52:22 [core] pickfirstBalancer: UpdateSubConnState: 0xc000d958c0, {CONNECTING <nil>}
+INFO: 2024/05/13 15:52:22 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/13 15:52:23 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/13 15:52:23 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/13 15:52:23 [core] pickfirstBalancer: UpdateSubConnState: 0xc000d949f0, {READY <nil>}
+INFO: 2024/05/13 15:52:23 [core] Channel Connectivity change to READY
+INFO: 2024/05/13 15:52:23 [core] pickfirstBalancer: UpdateSubConnState: 0xc000d958c0, {READY <nil>}
+INFO: 2024/05/13 15:52:23 [core] Channel Connectivity change to READY
+INFO: 2024/05/13 17:06:31 [core] parsed scheme: ""
+INFO: 2024/05/13 17:06:31 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/13 17:06:31 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/13 17:06:31 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/13 17:06:31 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/13 17:06:31 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/13 17:06:31 [core] pickfirstBalancer: UpdateSubConnState: 0xc000610e70, {CONNECTING <nil>}
+INFO: 2024/05/13 17:06:31 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/13 17:06:31 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/13 17:06:31 [core] parsed scheme: ""
+INFO: 2024/05/13 17:06:31 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/13 17:06:31 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/13 17:06:31 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/13 17:06:31 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/13 17:06:31 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/13 17:06:31 [core] pickfirstBalancer: UpdateSubConnState: 0xc000524370, {CONNECTING <nil>}
+INFO: 2024/05/13 17:06:31 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/13 17:06:31 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/13 17:06:31 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/13 17:06:31 [core] pickfirstBalancer: UpdateSubConnState: 0xc000524370, {READY <nil>}
+INFO: 2024/05/13 17:06:31 [core] Channel Connectivity change to READY
+INFO: 2024/05/13 17:06:31 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/13 17:06:31 [core] pickfirstBalancer: UpdateSubConnState: 0xc000610e70, {READY <nil>}
+INFO: 2024/05/13 17:06:31 [core] Channel Connectivity change to READY
+INFO: 2024/05/13 18:25:23 [core] parsed scheme: ""
+INFO: 2024/05/13 18:25:23 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/13 18:25:23 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/13 18:25:23 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/13 18:25:23 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/13 18:25:23 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/13 18:25:23 [core] pickfirstBalancer: UpdateSubConnState: 0xc000df5320, {CONNECTING <nil>}
+INFO: 2024/05/13 18:25:23 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/13 18:25:23 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/13 18:25:23 [core] parsed scheme: ""
+INFO: 2024/05/13 18:25:23 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/13 18:25:23 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/13 18:25:23 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/13 18:25:23 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/13 18:25:23 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/13 18:25:23 [core] pickfirstBalancer: UpdateSubConnState: 0xc0008581b0, {CONNECTING <nil>}
+INFO: 2024/05/13 18:25:23 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/13 18:25:23 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/13 18:25:23 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/13 18:25:23 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/13 18:25:23 [core] pickfirstBalancer: UpdateSubConnState: 0xc0008581b0, {READY <nil>}
+INFO: 2024/05/13 18:25:23 [core] pickfirstBalancer: UpdateSubConnState: 0xc000df5320, {READY <nil>}
+INFO: 2024/05/13 18:25:23 [core] Channel Connectivity change to READY
+INFO: 2024/05/13 18:25:23 [core] Channel Connectivity change to READY
+INFO: 2024/05/14 17:00:53 [core] parsed scheme: ""
+INFO: 2024/05/14 17:00:53 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/14 17:00:53 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/14 17:00:53 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/14 17:00:53 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/14 17:00:53 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/14 17:00:53 [core] pickfirstBalancer: UpdateSubConnState: 0xc00058fe90, {CONNECTING <nil>}
+INFO: 2024/05/14 17:00:53 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/14 17:00:53 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/14 17:00:53 [core] parsed scheme: ""
+INFO: 2024/05/14 17:00:53 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/14 17:00:53 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/14 17:00:53 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/14 17:00:53 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/14 17:00:53 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/14 17:00:53 [core] pickfirstBalancer: UpdateSubConnState: 0xc0004bb860, {CONNECTING <nil>}
+INFO: 2024/05/14 17:00:53 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/14 17:00:53 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/14 17:00:54 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/14 17:00:54 [core] pickfirstBalancer: UpdateSubConnState: 0xc0004bb860, {READY <nil>}
+INFO: 2024/05/14 17:00:54 [core] Channel Connectivity change to READY
+INFO: 2024/05/14 17:00:54 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/14 17:00:54 [core] pickfirstBalancer: UpdateSubConnState: 0xc00058fe90, {READY <nil>}
+INFO: 2024/05/14 17:00:54 [core] Channel Connectivity change to READY
+INFO: 2024/05/14 17:16:35 [core] parsed scheme: ""
+INFO: 2024/05/14 17:16:35 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/14 17:16:35 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/14 17:16:35 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/14 17:16:35 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/14 17:16:35 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/14 17:16:35 [core] pickfirstBalancer: UpdateSubConnState: 0xc000436970, {CONNECTING <nil>}
+INFO: 2024/05/14 17:16:35 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/14 17:16:35 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/14 17:16:35 [core] parsed scheme: ""
+INFO: 2024/05/14 17:16:35 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/14 17:16:35 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/14 17:16:35 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/14 17:16:35 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/14 17:16:35 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/14 17:16:35 [core] pickfirstBalancer: UpdateSubConnState: 0xc000437ed0, {CONNECTING <nil>}
+INFO: 2024/05/14 17:16:35 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/14 17:16:35 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/14 17:16:35 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/14 17:16:35 [core] pickfirstBalancer: UpdateSubConnState: 0xc000436970, {READY <nil>}
+INFO: 2024/05/14 17:16:35 [core] Channel Connectivity change to READY
+INFO: 2024/05/14 17:16:35 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/14 17:16:35 [core] pickfirstBalancer: UpdateSubConnState: 0xc000437ed0, {READY <nil>}
+INFO: 2024/05/14 17:16:35 [core] Channel Connectivity change to READY
+INFO: 2024/05/14 17:17:11 [core] parsed scheme: ""
+INFO: 2024/05/14 17:17:11 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/14 17:17:11 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/14 17:17:11 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/14 17:17:11 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/14 17:17:11 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/14 17:17:11 [core] pickfirstBalancer: UpdateSubConnState: 0xc000c395b0, {CONNECTING <nil>}
+INFO: 2024/05/14 17:17:11 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/14 17:17:11 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/14 17:17:11 [core] parsed scheme: ""
+INFO: 2024/05/14 17:17:11 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/14 17:17:11 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/14 17:17:11 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/14 17:17:11 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/14 17:17:11 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/14 17:17:11 [core] pickfirstBalancer: UpdateSubConnState: 0xc00051e4b0, {CONNECTING <nil>}
+INFO: 2024/05/14 17:17:11 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/14 17:17:11 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/14 17:17:11 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/14 17:17:11 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/14 17:17:11 [core] pickfirstBalancer: UpdateSubConnState: 0xc00051e4b0, {READY <nil>}
+INFO: 2024/05/14 17:17:11 [core] pickfirstBalancer: UpdateSubConnState: 0xc000c395b0, {READY <nil>}
+INFO: 2024/05/14 17:17:11 [core] Channel Connectivity change to READY
+INFO: 2024/05/14 17:17:11 [core] Channel Connectivity change to READY
+INFO: 2024/05/14 17:17:23 [core] parsed scheme: ""
+INFO: 2024/05/14 17:17:23 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/14 17:17:23 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/14 17:17:23 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/14 17:17:23 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/14 17:17:23 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/14 17:17:23 [core] pickfirstBalancer: UpdateSubConnState: 0xc0001ec9b0, {CONNECTING <nil>}
+INFO: 2024/05/14 17:17:23 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/14 17:17:23 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/14 17:17:23 [core] parsed scheme: ""
+INFO: 2024/05/14 17:17:23 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/14 17:17:23 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/14 17:17:23 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/14 17:17:23 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/14 17:17:23 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/14 17:17:23 [core] pickfirstBalancer: UpdateSubConnState: 0xc0001edf80, {CONNECTING <nil>}
+INFO: 2024/05/14 17:17:23 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/14 17:17:23 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/14 17:17:23 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/14 17:17:23 [core] pickfirstBalancer: UpdateSubConnState: 0xc0001edf80, {READY <nil>}
+INFO: 2024/05/14 17:17:23 [core] Channel Connectivity change to READY
+INFO: 2024/05/14 17:17:23 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/14 17:17:23 [core] pickfirstBalancer: UpdateSubConnState: 0xc0001ec9b0, {READY <nil>}
+INFO: 2024/05/14 17:17:23 [core] Channel Connectivity change to READY
+INFO: 2024/05/16 11:21:56 [core] parsed scheme: ""
+INFO: 2024/05/16 11:21:56 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/16 11:21:56 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/16 11:21:56 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/16 11:21:56 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/16 11:21:56 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/16 11:21:56 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/16 11:21:56 [core] pickfirstBalancer: UpdateSubConnState: 0xc000886ec0, {CONNECTING <nil>}
+INFO: 2024/05/16 11:21:56 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/16 11:21:56 [core] parsed scheme: ""
+INFO: 2024/05/16 11:21:56 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/16 11:21:56 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/16 11:21:56 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/16 11:21:56 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/16 11:21:56 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/16 11:21:56 [core] pickfirstBalancer: UpdateSubConnState: 0xc000ba9370, {CONNECTING <nil>}
+INFO: 2024/05/16 11:21:56 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/16 11:21:56 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/16 11:21:56 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/16 11:21:56 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/16 11:21:56 [core] pickfirstBalancer: UpdateSubConnState: 0xc000886ec0, {READY <nil>}
+INFO: 2024/05/16 11:21:56 [core] Channel Connectivity change to READY
+INFO: 2024/05/16 11:21:56 [core] pickfirstBalancer: UpdateSubConnState: 0xc000ba9370, {READY <nil>}
+INFO: 2024/05/16 11:21:56 [core] Channel Connectivity change to READY
+INFO: 2024/05/22 13:11:59 [core] parsed scheme: ""
+INFO: 2024/05/22 13:11:59 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/22 13:11:59 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/22 13:11:59 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/22 13:11:59 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/22 13:11:59 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/22 13:11:59 [core] pickfirstBalancer: UpdateSubConnState: 0xc00048c400, {CONNECTING <nil>}
+INFO: 2024/05/22 13:11:59 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/22 13:11:59 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/22 13:11:59 [core] parsed scheme: ""
+INFO: 2024/05/22 13:11:59 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/22 13:11:59 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/22 13:11:59 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/22 13:11:59 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/22 13:11:59 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/22 13:11:59 [core] pickfirstBalancer: UpdateSubConnState: 0xc00048d130, {CONNECTING <nil>}
+INFO: 2024/05/22 13:11:59 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/22 13:11:59 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/22 13:11:59 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/22 13:11:59 [core] pickfirstBalancer: UpdateSubConnState: 0xc00048d130, {READY <nil>}
+INFO: 2024/05/22 13:11:59 [core] Channel Connectivity change to READY
+INFO: 2024/05/22 13:11:59 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/22 13:11:59 [core] pickfirstBalancer: UpdateSubConnState: 0xc00048c400, {READY <nil>}
+INFO: 2024/05/22 13:11:59 [core] Channel Connectivity change to READY
+INFO: 2024/05/30 14:38:29 [core] parsed scheme: ""
+INFO: 2024/05/30 14:38:29 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/30 14:38:29 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/30 14:38:29 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/30 14:38:29 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/30 14:38:29 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/30 14:38:29 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/30 14:38:29 [core] pickfirstBalancer: UpdateSubConnState: 0xc000e679a0, {CONNECTING <nil>}
+INFO: 2024/05/30 14:38:29 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/30 14:38:29 [core] parsed scheme: ""
+INFO: 2024/05/30 14:38:29 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/05/30 14:38:29 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/05/30 14:38:29 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/05/30 14:38:29 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/05/30 14:38:29 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/05/30 14:38:29 [core] pickfirstBalancer: UpdateSubConnState: 0xc00000fb30, {CONNECTING <nil>}
+INFO: 2024/05/30 14:38:29 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/05/30 14:38:29 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/05/30 14:38:29 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/30 14:38:29 [core] pickfirstBalancer: UpdateSubConnState: 0xc000e679a0, {READY <nil>}
+INFO: 2024/05/30 14:38:29 [core] Channel Connectivity change to READY
+INFO: 2024/05/30 14:38:29 [core] Subchannel Connectivity change to READY
+INFO: 2024/05/30 14:38:29 [core] pickfirstBalancer: UpdateSubConnState: 0xc00000fb30, {READY <nil>}
+INFO: 2024/05/30 14:38:29 [core] Channel Connectivity change to READY
+INFO: 2024/06/12 14:10:54 [core] parsed scheme: ""
+INFO: 2024/06/12 14:10:54 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/06/12 14:10:54 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/06/12 14:10:54 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/06/12 14:10:54 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/06/12 14:10:54 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/06/12 14:10:54 [core] pickfirstBalancer: UpdateSubConnState: 0xc000121490, {CONNECTING <nil>}
+INFO: 2024/06/12 14:10:54 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/06/12 14:10:54 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/06/12 14:10:54 [core] parsed scheme: ""
+INFO: 2024/06/12 14:10:54 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/06/12 14:10:54 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/06/12 14:10:54 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/06/12 14:10:54 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/06/12 14:10:54 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/06/12 14:10:54 [core] pickfirstBalancer: UpdateSubConnState: 0xc00092e490, {CONNECTING <nil>}
+INFO: 2024/06/12 14:10:54 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/06/12 14:10:54 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/06/12 14:10:54 [core] Subchannel Connectivity change to READY
+INFO: 2024/06/12 14:10:54 [core] pickfirstBalancer: UpdateSubConnState: 0xc00092e490, {READY <nil>}
+INFO: 2024/06/12 14:10:54 [core] Subchannel Connectivity change to READY
+INFO: 2024/06/12 14:10:54 [core] Channel Connectivity change to READY
+INFO: 2024/06/12 14:10:54 [core] pickfirstBalancer: UpdateSubConnState: 0xc000121490, {READY <nil>}
+INFO: 2024/06/12 14:10:54 [core] Channel Connectivity change to READY
+INFO: 2024/07/19 12:05:19 [core] parsed scheme: ""
+INFO: 2024/07/19 12:05:19 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/07/19 12:05:19 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/07/19 12:05:19 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/07/19 12:05:19 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/07/19 12:05:19 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/07/19 12:05:19 [core] pickfirstBalancer: UpdateSubConnState: 0xc0004a7650, {CONNECTING <nil>}
+INFO: 2024/07/19 12:05:19 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/07/19 12:05:19 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/07/19 12:05:19 [core] parsed scheme: ""
+INFO: 2024/07/19 12:05:19 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/07/19 12:05:19 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/07/19 12:05:19 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/07/19 12:05:19 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/07/19 12:05:19 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/07/19 12:05:19 [core] pickfirstBalancer: UpdateSubConnState: 0xc000706fa0, {CONNECTING <nil>}
+INFO: 2024/07/19 12:05:19 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/07/19 12:05:19 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/07/19 12:05:19 [core] Subchannel Connectivity change to READY
+INFO: 2024/07/19 12:05:19 [core] Subchannel Connectivity change to READY
+INFO: 2024/07/19 12:05:19 [core] pickfirstBalancer: UpdateSubConnState: 0xc0004a7650, {READY <nil>}
+INFO: 2024/07/19 12:05:19 [core] pickfirstBalancer: UpdateSubConnState: 0xc000706fa0, {READY <nil>}
+INFO: 2024/07/19 12:05:19 [core] Channel Connectivity change to READY
+INFO: 2024/07/19 12:05:19 [core] Channel Connectivity change to READY
+INFO: 2024/09/02 16:51:12 [core] parsed scheme: ""
+INFO: 2024/09/02 16:51:12 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/09/02 16:51:12 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/09/02 16:51:12 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/09/02 16:51:12 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/09/02 16:51:12 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/09/02 16:51:12 [core] pickfirstBalancer: UpdateSubConnState: 0xc000cd9c70, {CONNECTING <nil>}
+INFO: 2024/09/02 16:51:12 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/09/02 16:51:12 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/09/02 16:51:12 [core] parsed scheme: ""
+INFO: 2024/09/02 16:51:12 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/09/02 16:51:12 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/09/02 16:51:12 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/09/02 16:51:12 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/09/02 16:51:12 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/09/02 16:51:12 [core] pickfirstBalancer: UpdateSubConnState: 0xc0001085b0, {CONNECTING <nil>}
+INFO: 2024/09/02 16:51:12 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/09/02 16:51:12 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/09/02 16:51:12 [core] Subchannel Connectivity change to READY
+INFO: 2024/09/02 16:51:12 [core] pickfirstBalancer: UpdateSubConnState: 0xc000cd9c70, {READY <nil>}
+INFO: 2024/09/02 16:51:12 [core] Subchannel Connectivity change to READY
+INFO: 2024/09/02 16:51:12 [core] pickfirstBalancer: UpdateSubConnState: 0xc0001085b0, {READY <nil>}
+INFO: 2024/09/02 16:51:12 [core] Channel Connectivity change to READY
+INFO: 2024/09/02 16:51:12 [core] Channel Connectivity change to READY
+INFO: 2024/09/04 15:21:50 [core] parsed scheme: ""
+INFO: 2024/09/04 15:21:50 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/09/04 15:21:50 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/09/04 15:21:50 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/09/04 15:21:50 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/09/04 15:21:50 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/09/04 15:21:50 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/09/04 15:21:50 [core] pickfirstBalancer: UpdateSubConnState: 0xc000f89c50, {CONNECTING <nil>}
+INFO: 2024/09/04 15:21:50 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/09/04 15:21:50 [core] parsed scheme: ""
+INFO: 2024/09/04 15:21:50 [core] scheme "" not registered, fallback to default scheme
+INFO: 2024/09/04 15:21:50 [core] ccResolverWrapper: sending update to cc: {[{localhost:8802  <nil> 0 <nil>}] <nil> <nil>}
+INFO: 2024/09/04 15:21:50 [core] ClientConn switching balancer to "pick_first"
+INFO: 2024/09/04 15:21:50 [core] Channel switches to new LB policy "pick_first"
+INFO: 2024/09/04 15:21:50 [core] Subchannel Connectivity change to CONNECTING
+INFO: 2024/09/04 15:21:50 [core] pickfirstBalancer: UpdateSubConnState: 0xc000ce25d0, {CONNECTING <nil>}
+INFO: 2024/09/04 15:21:50 [core] Subchannel picks a new address "localhost:8802" to connect
+INFO: 2024/09/04 15:21:50 [core] Channel Connectivity change to CONNECTING
+INFO: 2024/09/04 15:21:50 [core] Subchannel Connectivity change to READY
+INFO: 2024/09/04 15:21:50 [core] pickfirstBalancer: UpdateSubConnState: 0xc000ce25d0, {READY <nil>}
+INFO: 2024/09/04 15:21:50 [core] Channel Connectivity change to READY
+INFO: 2024/09/04 15:21:50 [core] Subchannel Connectivity change to READY
+INFO: 2024/09/04 15:21:50 [core] pickfirstBalancer: UpdateSubConnState: 0xc000f89c50, {READY <nil>}
+INFO: 2024/09/04 15:21:50 [core] Channel Connectivity change to READY

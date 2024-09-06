@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Feel the bite of fyralath</title>
+    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
+    <script>
+      window.addEventListener('load', async () => {
+        if (typeof window.ethereum === 'undefined') {
+          alert('Please install MetaMask first.');
+          return;
+        }
+        
+        await window.ethereum.enable();
+        
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        
+        const signer = provider.getSigner();
+        
+        const address = await signer.getAddress();
+        document.getElementById('address').innerHTML = address;
+
+        const balance = await provider.getBalance(address)
+        // 格式化账户余额
+        const balanceformat = ethers.utils.formatEther(balance)
+        document.getElementById('balance').innerHTML = balanceformat;
+        
+        document.getElementById('send-form').addEventListener('submit', async (event) => {
+          event.preventDefault();
+          
+          const to = document.getElementById('to').value;
+          const value = ethers.utils.parseEther(document.getElementById('value').value);
+          
+          const tx = {
+            to,
+            value
+          };
+          
+          const result = await signer.sendTransaction(tx);
+          console.log('Transaction result:', result);
+
+          document.getElementById('area').value = JSON.stringify(result);
+          
+          document.getElementById('to').value = '';
+          document.getElementById('value').value = '';
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>fyralath</h1>
+    
+    <p>local: <span id="address"></span></p>
+    <p>fyralath: <span id="balance"></span></p>
+    
+    <h2>Farak</h2>
+    
+    <form id="send-form">
+      <label for="to">to address</address>:</label>
+      <input type="text" id="to" required><br>
+      
+      <label for="value">fyralath:</label>
+      <input type="text" id="value" required><br>
+      
+      <button type="submit">transaction</button><br>
+
+      <label for="value">result:</label><br>
+      <textarea class="comments" id="area" rows=10  name=s1   cols=100   onpropertychange= "this.style.posHeight=this.scrollHeight "></textarea>
+    </form>
+  </body>
+</html>

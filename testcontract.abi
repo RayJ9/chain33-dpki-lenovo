@@ -1,0 +1,125 @@
+[
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "bytes8",
+				"name": "key",
+				"type": "bytes8"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "message",
+				"type": "string"
+			}
+		],
+		"name": "MessageAdded",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "bytes8",
+				"name": "key",
+				"type": "bytes8"
+			}
+		],
+		"name": "MessageRevoked",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "bytes8",
+				"name": "key",
+				"type": "bytes8"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "newMessage",
+				"type": "string"
+			}
+		],
+		"name": "MessageUpdated",
+		"type": "event"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "bytes8",
+				"name": "key",
+				"type": "bytes8"
+			}
+		],
+		"name": "getMessage",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "transactionType",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "newMessage",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "originalMessage",
+				"type": "string"
+			}
+		],
+		"name": "handleTransaction",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "bytes8",
+				"name": "",
+				"type": "bytes8"
+			}
+		],
+		"name": "messages",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "message",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "originalMessage",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
