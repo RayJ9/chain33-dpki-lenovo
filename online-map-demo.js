@@ -1,7 +1,8 @@
 const Web3 = require('web3');
 const fs = require('fs');
 const path = require('path');
-const web3 = new Web3(new Web3.providers.HttpProvider("http://121.248.52.241:8545")); //主机ip
+
+const web3 = new Web3(new Web3.providers.HttpProvider("http://121.248.55.7:8545")); //主机ip
 
 var abi = JSON.parse(fs.readFileSync(path.join(__dirname, "./testcontract.abi")).toString())
 var bytecode = fs.readFileSync(path.join(__dirname, "./testcontract.code")).toString()
@@ -36,7 +37,7 @@ const uploadmessage = async (contractAddress, transactionType, newMessage, origi
         const messageKey = generateShortKey(newMessage);
         console.log('key是', messageKey,'请牢记');
         const storedMessage = await contract.methods.getMessage(messageKey).call();
-        console.log('已存储', storedMessage);
+        console.log('已存储', storedMessage);s2
         
         return {
             transactionHash: receipt.transactionHash,
@@ -119,20 +120,28 @@ const deployContract = async () => {
     }
 };
 
-// 查询该合约的所有历史,目前查不到update删掉了哪个，但其实问题不大
-getPastEventsInBatches('0xb3B8372542386Bec38Cf84527e4B9031BD88E193', 5000, 1, 'latest');
- 
-//commands
+const caName = 'root_CA';
+const ueName = 'UE3';
+const uepasswd = '123456';
+const rootDir = path.join(__dirname, caName);
+const ueDir = path.join(__dirname, ueName);
 
+// 查询该合约的所有历史,目前查不到update删掉了哪个，但其实问题不大
+// getPastEventsInBatches('0x36DA2d33ee10b3977DF87F417CE536B3F584B713', 5000, 1, 'latest');
+ 
 // 部署合约，目前合约的key是8位哈希，要调整需要整体调
 // deployContract();
 
+const certFilePath = path.join(rootDir, 'certs', `${caName}.crt`);
+const certContent = fs.readFileSync(certFilePath, 'utf8'); // 'utf8' ensures the file is read as a string
+console.log('证书已加载:', certContent);
+
 
 // 用于上链消息，l1：deploy完会返回你合约地址，copy进来； l2：type：包含add，update，revoke；  l3：新增的消息（add，或者update的新的那个）;  l4:移除的消息（revoke，或者update去掉的那个）
-// uploadmessage('0xb3B8372542386Bec38Cf84527e4B9031BD88E193', 
-//               'revoke',
-//               '' ,
-//               'asd');
+// uploadmessage('0x36DA2d33ee10b3977DF87F417CE536B3F584B713', 
+//               'add',
+//               certContent,
+//               '');
 
 //查询，这条不花gas随意查，上链设定为需要一定gas
-// callGetMessage('0xb3B8372542386Bec38Cf84527e4B9031BD88E193', '0x87c2d362de99f75a');
+callGetMessage('0x36DA2d33ee10b3977DF87F417CE536B3F584B713', '0x8bf75416baeb14d4');

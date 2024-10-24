@@ -5,7 +5,7 @@ const path = require('path');
 
 
 const DATABASE_FILE = path.join(__dirname, '这是数据库.db');
-const httpProvider = new Web3.providers.HttpProvider("http://121.248.52.241:8545"); //需要修改
+const httpProvider = new Web3.providers.HttpProvider("http://121.248.54.61:8545"); //需要修改
 
 
 const web3 = new Web3(httpProvider);
@@ -138,16 +138,16 @@ function creatTransaction(from,to,type,text,originalmessage) {
     });
 }
 
-creatTransaction("0xab7F5238cbEfB02062241cf979e4994b656FB944",//from
-                 "0x4ba8e5f51647d56455ef36b1d760a0a1749e9126",//to
-                 "add",// add, update, revoke
-                 "damned",//正文，仅限于更新或者新增时要增加的东西
-                 "helloworld4");//仅限于更新或撤销时要删掉的东西（是全文不是key值），也可以是key
+// creatTransaction("0xab7F5238cbEfB02062241cf979e4994b656FB944",//from
+//                  "0x4ba8e5f51647d56455ef36b1d760a0a1749e9126",//to
+//                  "add",// add, update, revoke
+//                  "helloeeee",//正文，仅限于更新或者新增时要增加的东西
+//                  "");//仅限于更新或撤销时要删掉的东西（是全文不是key值），也可以是key
 
 
-searchMessage("fcfc1253"); //用key查询
+// searchMessage("fcfc1253"); //用key查询
 
-listdb();
+// listdb();
 
 // console.log(web3.modules)
 // console.log(Web3.version)
@@ -166,8 +166,8 @@ listdb();
 // web3.eth.getTransactionCount("0xab7F5238cbEfB02062241cf979e4994b656FB944").then(console.log)
 
 // web3.eth.getAccounts().then(console.log)
-// web3.eth.personal.newAccount('ray123456').then(console.log);
-// web3.eth.personal.importRawKey("63a0c8003d0e1ce2d9513e2f0981f1ebb928136c0a36637962169ca94ac1553b", "kk").then(console.log);
+// web3.eth.personal.newAccount('139513').then(console.log);
+web3.eth.personal.importRawKey("0xfbefbef8110620d1023c04403044c4452fbefbef81814ae0410002", "sd").then(console.log);
 // web3.eth.getAccounts().then(console.log)
 // web3.eth.getBalance("0xab7F5238cbEfB02062241cf979e4994b656FB944").then(console.log)
 
