@@ -4,8 +4,9 @@ const crypto = require('crypto');
 const Datastore = require('nedb');
 const { exec } = require('child_process');
 const Web3 = require('web3');
+const { keccak256 } = require('js-sha3');
 
-const httpProvider = new Web3.providers.HttpProvider("http://121.248.55.7:8545"); //需要修改
+const httpProvider = new Web3.providers.HttpProvider("http://121.248.50.247:8545"); //需要修改
 
 const web3 = new Web3(httpProvider);
 
@@ -100,6 +101,18 @@ fs.writeFileSync(filename, rootConfigData);
   return filename;
 }
 
+function etheraddressfrompk(pubkeyHex) {
+  if (pubkeyHex.startsWith('04')) {
+    pubkeyHex = pubkeyHex.slice(2);
+  }
+  const pubkeyBytes = Buffer.from(pubkeyHex, 'hex');
+  const hash = keccak256.create();
+  hash.update(pubkeyBytes);
+  const hashedPubkey = hash.hex();
+  const ethAddress = '0x' + hashedPubkey.slice(-40);
+  return ethAddress;
+}
+
 //该函数待迁移到客户端，功能大概为
 function generateUEConfig(ue_name, ue_dir, ue_psw) {
   const filename = path.join(ue_dir, `${ue_name}.cnf`);
@@ -169,7 +182,7 @@ async function generateKeyAndCert(ca_name, root_dir) {
     // .\chain33-cli wallet unlock -p 密码 -t 0
     //不解锁的话不能创建账户
     //这里和etehrum不同，第二个字段在链33里变成了label，所以账户不能重名
-    web3.eth.personal.importRawKey(HEXsk,`qweq`).then(console.log);
+    web3.eth.personal.importRawKey(HEXsk, 'ca1').then(console.log);
     await runCommand(`openssl req -new -x509 -key ${privateKeyPath} -out ${certPath} -days 365 -config ${configFile} -passin pass:mysecret`);
     console.log(`Certificate saved to: ${certPath}`);
     } catch (err) {
@@ -198,7 +211,7 @@ async function UECSRgenerate(ue_name, ue_dir, ue_psw) {
       console.error('生成失败');
     }
  
-    web3.eth.personal.importRawKey(HEXsk,'qwaw').then(console.log);
+    web3.eth.personal.importRawKey(HEXsk, 'ue2').then(console.log);
     await runCommand(`openssl req -new -key ${privateKeyPath} -config ${configFile} -out ${csrPath}`);
     console.log(`CSR file saved to: ${csrPath}`);
     } catch (err) {
@@ -241,24 +254,22 @@ async function ueCertSignature(ca_name, root_dir, ue_name, ue_dir) {
 
  
 // 签名开始
-try {
-await runCommand(`openssl x509 -req -in ${csrPath} -CA ${CAPath} -CAkey ${privateKeyPath} -out ${CRTpath} -days 365 -extfile ${config}`);
-console.log('creat succeed')
-} catch (err) {
+  try {
+  await runCommand(`openssl x509 -req -in ${csrPath} -CA ${CAPath} -CAkey ${privateKeyPath} -out ${CRTpath} -days 365 -extfile ${config}`);
+  console.log('creat succeed')
+  } catch (err) {
   console.error('Error:', err);
-}
+  }
 
-if (fs.existsSync(CRTpath)) {
+  if (fs.existsSync(CRTpath)) {
     console.log(`签名成功，${ue_name}被${ca_name}签名了`);
-} else {
+  } else {
     console.log("出错，未能找到签名的证书");
+  }
 }
-
-
- }
 
 const caName = 'root_CA';
-const ueName = 'UE3';
+const ueName = 'UE2';
 const uepasswd = '123456';
 const rootDir = path.join(__dirname, caName);
 const ueDir = path.join(__dirname, ueName);

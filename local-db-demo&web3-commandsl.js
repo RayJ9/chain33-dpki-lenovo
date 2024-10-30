@@ -5,7 +5,7 @@ const path = require('path');
 
 
 const DATABASE_FILE = path.join(__dirname, '这是数据库.db');
-const httpProvider = new Web3.providers.HttpProvider("http://121.248.54.61:8545"); //需要修改
+const httpProvider = new Web3.providers.HttpProvider("http://121.248.50.247:8545"); //需要修改
 
 
 const web3 = new Web3(httpProvider);
@@ -167,7 +167,7 @@ function creatTransaction(from,to,type,text,originalmessage) {
 
 // web3.eth.getAccounts().then(console.log)
 // web3.eth.personal.newAccount('139513').then(console.log);
-web3.eth.personal.importRawKey("0xfbefbef8110620d1023c04403044c4452fbefbef81814ae0410002", "sd").then(console.log);
+web3.eth.personal.importRawKey("0x73e66f099144f820753aa3a5e131785b528081da572e16339fcd02de05de719e", "root").then(console.log);
 // web3.eth.getAccounts().then(console.log)
 // web3.eth.getBalance("0xab7F5238cbEfB02062241cf979e4994b656FB944").then(console.log)
 

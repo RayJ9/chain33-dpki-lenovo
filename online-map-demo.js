@@ -2,29 +2,25 @@ const Web3 = require('web3');
 const fs = require('fs');
 const path = require('path');
 
-const web3 = new Web3(new Web3.providers.HttpProvider("http://121.248.55.7:8545")); //主机ip
+const web3 = new Web3(new Web3.providers.HttpProvider("http://121.248.48.73:8545")); //主机ip
 
-var abi = JSON.parse(fs.readFileSync(path.join(__dirname, "./testcontract.abi")).toString())
-var bytecode = fs.readFileSync(path.join(__dirname, "./testcontract.code")).toString()
+var abi = JSON.parse(fs.readFileSync(path.join(__dirname, "./authentication.abi")).toString())
+var bytecode = fs.readFileSync(path.join(__dirname, "./authentication.code")).toString()
 
 const account = '0xab7F5238cbEfB02062241cf979e4994b656FB944'; //目前配置似乎不能是创世之外的地址
 const privateKey = '0x73e66f099144f820753aa3a5e131785b528081da572e16339fcd02de05de719e'; //对应私钥
 
-const generateShortKey = (message) => { //对应合约，可以不是八位hash（这里18是截取前 0x + 16hex）
-    const hash = web3.utils.keccak256(message);
-    return hash.slice(0, 18);
-};
-
-const uploadmessage = async (contractAddress, transactionType, newMessage, originalMessage = '') => {
+const registerCertificate = async (contractAddress, label, certAddress, certData, notBefore, notAfter) => {
     try {
         const contract = new web3.eth.Contract(abi, contractAddress);
-        const gasEstimate = await contract.methods.handleTransaction(transactionType, newMessage, originalMessage)
+
+        const gasEstimate = await contract.methods.registerCertificate(label, certAddress, certData, notBefore, notAfter)
             .estimateGas({ from: account });
 
         const signedTx = await web3.eth.accounts.signTransaction(
             {
                 to: contractAddress,
-                data: contract.methods.handleTransaction(transactionType, newMessage, originalMessage).encodeABI(),
+                data: contract.methods.registerCertificate(label, certAddress, certData, notBefore, notAfter).encodeABI(),
                 gas: gasEstimate,
                 from: account
             },
@@ -32,39 +28,77 @@ const uploadmessage = async (contractAddress, transactionType, newMessage, origi
         );
 
         const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-        console.log('回执', receipt);
-
-        const messageKey = generateShortKey(newMessage);
-        console.log('key是', messageKey,'请牢记');
-        const storedMessage = await contract.methods.getMessage(messageKey).call();
-        console.log('已存储', storedMessage);s2
-        
-        return {
-            transactionHash: receipt.transactionHash,
-            storedMessage
-        };
+        console.log('证书已存储，回执:', receipt);
+        return receipt;
 
     } catch (err) {
-        console.error(err);
+        console.error('寄了:', err);
     }
 };
 
-const callGetMessage = async (contractAddress, messageKey) => {
+const updateCertificate = async (contractAddress, label, certAddress, certData, notBefore, notAfter) => {
     try {
         const contract = new web3.eth.Contract(abi, contractAddress);
-        const storedMessage = await contract.methods.getMessage(messageKey).call();
-        if (storedMessage) {
-            console.log('查询到对应字段为', storedMessage);
-        } else {
-            // If storedMessage is falsy (null, undefined, etc.), log not found
-            console.log('查不到喽');
-        }
+
+        const gasEstimate = await contract.methods.updateCertificate(label, certAddress, certData, notBefore, notAfter)
+            .estimateGas({ from: account });
+
+        const signedTx = await web3.eth.accounts.signTransaction(
+            {
+                to: contractAddress,
+                data: contract.methods.updateCertificate(label, certAddress, certData, notBefore, notAfter).encodeABI(),
+                gas: gasEstimate,
+                from: account
+            },
+            privateKey
+        );
+        const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+        console.log('证书已更新，回执:', receipt);
+        return receipt;
 
     } catch (err) {
-        console.error('寄了',err);
+        console.error('寄了:', err);
     }
 };
 
+const revokeCertificate = async (contractAddress, label) => {
+    try {
+        const contract = new web3.eth.Contract(abi, contractAddress);
+
+        const gasEstimate = await contract.methods.revokeCertificate(label)
+            .estimateGas({ from: account });
+
+        const signedTx = await web3.eth.accounts.signTransaction(
+            {
+                to: contractAddress,
+                data: contract.methods.revokeCertificate(label).encodeABI(),
+                gas: gasEstimate,
+                from: account
+            },
+            privateKey
+        );
+
+        const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+        console.log('证书已撤销，回执:', receipt);
+        return receipt;
+
+    } catch (err) {
+        console.error('寄了:', err);
+    }
+};
+
+const verifyAll = async (contractAddress, signedAssertion, message, label, certAddress, inputCert) => {
+    try {
+        const contract = new web3.eth.Contract(abi, contractAddress);
+
+        const allValid = await contract.methods.verifyAll(signedAssertion, message, label, certAddress, inputCert).call();
+        console.log('验证结果是:', allValid);
+        return allValid;
+
+    } catch (err) {
+        console.error('寄了:', err);
+    }
+};
 
 const deployContract = async () => {
     try {
@@ -72,7 +106,7 @@ const deployContract = async () => {
    
      const contractdeploy = contract.deploy({
        data: bytecode,
-       arguments: ["try it!"],
+       arguments: ["干!"],
      });
  
    const createTransaction = await web3.eth.accounts.signTransaction(
@@ -90,58 +124,70 @@ const deployContract = async () => {
  }
  }
 
- const getPastEventsInBatches = async (contractAddress, batchSize, fromBlock, toBlock = 'latest') => {
-    try {
-        const contract = new web3.eth.Contract(abi, contractAddress);
-        const latestBlock = await web3.eth.getBlockNumber();
-        const finalToBlock = toBlock === 'latest' ? latestBlock : toBlock;
-        for (let startBlock = fromBlock; startBlock <= finalToBlock; startBlock += batchSize) {
-            const endBlock = Math.min(startBlock + batchSize - 1, finalToBlock);
+// const certFilePath = path.join(rootDir, 'certs', `${caName}.crt`);
+// const certContent = fs.readFileSync(certFilePath, 'utf8');
+// console.log('证书已加载:', certContent);
 
-            console.log(`Fetching events from block ${startBlock} to ${endBlock}`);
+const contractAddress = '0x45da9CC274E79D256f2b3bc2FbFF96c86781207A'
 
-            const events = await contract.getPastEvents('allEvents', {
-                fromBlock: startBlock,
-                toBlock: endBlock
-            });
-
-            events.forEach(event => {
-                const formattedLog = {
-                    from: event.address,
-                    topic: event.raw ? event.raw.topics[0] : 'No topic found',
-                    event: event.event || 'No event name',
-                    args: event.returnValues || 'No return values'
-                };
-                console.log(JSON.stringify(formattedLog, null, 2));
-            });
-        }
-    } catch (err) {
-        console.error('Error fetching events:', err);
-    }
-};
-
+//local cert canshu!
 const caName = 'root_CA';
 const ueName = 'UE3';
 const uepasswd = '123456';
 const rootDir = path.join(__dirname, caName);
 const ueDir = path.join(__dirname, ueName);
 
-// 查询该合约的所有历史,目前查不到update删掉了哪个，但其实问题不大
-// getPastEventsInBatches('0x36DA2d33ee10b3977DF87F417CE536B3F584B713', 5000, 1, 'latest');
- 
-// 部署合约，目前合约的key是8位哈希，要调整需要整体调
+//online cert db canshu!
+const label = 'B'
+const certAddress = '0x379f8d1a0639b0186b8fc86da2087b861b1a63ef'
+const certData = '0x12345678'
+const notBefore = '1727500506'
+const notAfter = '1769036506'
+
+//online verification canshu!
+const signedAssertion = '0x64ad852e64c2fc763c32d1545e1c01588dd7afffb1500ab56b8637414e86bdc32b235e9015c88ede064f63daae79f6b2497e610431f62d593f3ebdc708edec1e1c'
+const message = '0x379f8d1a0639b0186b8fc86da2087b861b1a63ef'
+const inputlabel = 'B'
+const inputcertaddr = '0x379f8d1a0639b0186b8fc86da2087b861b1a63ef'
+const inputcert = '0x12345678'
+
+// 部署合约
+
 // deployContract();
 
-const certFilePath = path.join(rootDir, 'certs', `${caName}.crt`);
-const certContent = fs.readFileSync(certFilePath, 'utf8'); // 'utf8' ensures the file is read as a string
-console.log('证书已加载:', certContent);
+
+registerCertificate(
+    contractAddress,
+    label,
+    certAddress,
+    certData,
+    notBefore,
+    notAfter
+)
 
 
-// 用于上链消息，l1：deploy完会返回你合约地址，copy进来； l2：type：包含add，update，revoke；  l3：新增的消息（add，或者update的新的那个）;  l4:移除的消息（revoke，或者update去掉的那个）
-// uploadmessage('0x36DA2d33ee10b3977DF87F417CE536B3F584B713', 
-//               'add',
-//               certContent,
-//               '');
+// updateCertificate(
+//     contractAddress,
+//     label,
+//     certAddress,
+//     certData,
+//     notBefore,
+//     notAfter
+// )
 
-//查询，这条不花gas随意查，上链设定为需要一定gas
-callGetMessage('0x36DA2d33ee10b3977DF87F417CE536B3F584B713', '0x8bf75416baeb14d4');
+
+// revokeCertificate(
+//     contractAddress,
+//     label,
+// )
+
+
+// verifyAll(
+//     contractAddress,
+//     signedAssertion,
+//     message,
+//     inputlabel,
+//     inputcertaddr,
+//     inputcert
+// )
+
