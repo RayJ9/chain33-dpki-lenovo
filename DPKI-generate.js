@@ -5,6 +5,8 @@ const Datastore = require('nedb');
 const { exec } = require('child_process');
 const Web3 = require('web3');
 const { keccak256 } = require('js-sha3');
+const ethers = require('ethers');
+// const { ecsign, toBuffer, bufferToHex, ecrecover, pubToAddress, privateToPublic } = require('ethereumjs-util');
 
 const httpProvider = new Web3.providers.HttpProvider("http://121.248.50.247:8545"); //需要修改
 
@@ -101,17 +103,6 @@ fs.writeFileSync(filename, rootConfigData);
   return filename;
 }
 
-function etheraddressfrompk(pubkeyHex) {
-  if (pubkeyHex.startsWith('04')) {
-    pubkeyHex = pubkeyHex.slice(2);
-  }
-  const pubkeyBytes = Buffer.from(pubkeyHex, 'hex');
-  const hash = keccak256.create();
-  hash.update(pubkeyBytes);
-  const hashedPubkey = hash.hex();
-  const ethAddress = '0x' + hashedPubkey.slice(-40);
-  return ethAddress;
-}
 
 //该函数待迁移到客户端，功能大概为
 function generateUEConfig(ue_name, ue_dir, ue_psw) {
@@ -202,7 +193,7 @@ async function UECSRgenerate(ue_name, ue_dir, ue_psw) {
       console.log(`Private key saved to: ${privateKeyPath}`);
       const hexPrivateKeyOutput = await runCommand(`openssl ec -in ${privateKeyPath} -text -noout`);
       const privateKeyMatch = hexPrivateKeyOutput.match(/priv:\s*([\da-f\s:]+)/i);
-        
+    
     if (privateKeyMatch) {
       const privateKeyHex = privateKeyMatch[1].replace(/\s+/g, '').replace(/:/g, '');
       HEXsk = `0x${privateKeyHex}`;
@@ -268,15 +259,81 @@ async function ueCertSignature(ca_name, root_dir, ue_name, ue_dir) {
   }
 }
 
+
+function pkToAddress(publicKeyHex) {
+  const publicKeyBuffer = Buffer.from(publicKeyHex, 'hex');
+  const hash = ethers.utils.keccak256(publicKeyBuffer);
+  return `0x${hash.slice(-40)}`;
+
+}
+
+
+async function getCertificateDetails(dir, name) {
+  const CRTpath = path.join(dir, `certs`, `${name}.crt`);
+  
+  try {
+      const stdout = await runCommand(`openssl x509 -in ${CRTpath} -text -noout`);
+      return parseCertificate(stdout);
+  } catch (error) {
+      console.error("Error executing OpenSSL command:", error);
+      throw error;
+  }
+}
+
+function parseCertificate(opensslOutput) {
+  // Regex to match the public key and validity dates
+  const publicKeyMatch = /Public-Key:\s*\((\d+)\sbit\)\s*[\s\S]*?pub:\s*([\s\S]*?)\s*ASN1 OID:/m;
+  const validityMatch = /Not Before:\s*(.*? GMT).*?Not After :\s*(.*? GMT)/s;
+
+  const publicKeyResult = publicKeyMatch.exec(opensslOutput);
+  const validityResult = validityMatch.exec(opensslOutput);
+
+  if (!publicKeyResult || !validityResult) {
+      throw new Error("Could not parse certificate data.");
+  }
+
+  // Extract and format the public key
+  const publicKeyHex = publicKeyResult[2].replace(/[:\s]/g, ''); // Remove colons and whitespace
+
+  // Convert public key to Ethereum address
+  const ethereumAddress = pkToAddress(publicKeyHex);
+
+  // Extract validity dates and convert to timestamps
+  const notBefore = new Date(validityResult[1]).getTime() / 1000;
+  const notAfter = new Date(validityResult[2]).getTime() / 1000;
+
+  return {
+      ethereumAddress,
+      validity: {
+          notBefore: Math.floor(notBefore),
+          notAfter: Math.floor(notAfter)
+      }
+  };
+}
+
+
 const caName = 'root_CA';
-const ueName = 'UE2';
+const ueName = 'UE5';
 const uepasswd = '123456';
 const rootDir = path.join(__dirname, caName);
 const ueDir = path.join(__dirname, ueName);
+
+(async () => {
+  try {
+      await UECSRgenerate(ueName, ueDir, uepasswd);
+      await ueCertSignature(caName, rootDir, ueName, ueDir);
+      const details = await getCertificateDetails(ueDir, ueName);
+      console.log('Ethereum Address:', details.ethereumAddress);
+      console.log('Validity:', details.validity);
+  } catch (error) {
+      console.error('Error:', error);
+  }
+})();
+
 
 //CA 一步到位
 // generateKeyAndCert(caName, rootDir);
 
 //UE暂时分两步（客户端分离）
 // UECSRgenerate(ueName, ueDir, uepasswd);
-ueCertSignature(caName, rootDir, ueName, ueDir)
+// ueCertSignature(caName, rootDir, ueName, ueDir);

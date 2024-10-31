@@ -10,6 +10,7 @@ var bytecode = fs.readFileSync(path.join(__dirname, "./authentication.code")).to
 const account = '0xab7F5238cbEfB02062241cf979e4994b656FB944'; //目前配置似乎不能是创世之外的地址
 const privateKey = '0x73e66f099144f820753aa3a5e131785b528081da572e16339fcd02de05de719e'; //对应私钥
 
+
 const registerCertificate = async (contractAddress, label, certAddress, certData, notBefore, notAfter) => {
     try {
         const contract = new web3.eth.Contract(abi, contractAddress);
@@ -124,7 +125,55 @@ const deployContract = async () => {
  }
  }
 
-// const certFilePath = path.join(rootDir, 'certs', `${caName}.crt`);
+ function pkToAddress(publicKeyHex) {
+    const publicKeyBuffer = Buffer.from(publicKeyHex, 'hex');
+    const hash = crypto.createHash('keccak256').update(publicKeyBuffer.slice(1)).digest('hex');
+    return `0x${hash.slice(-40)}`; // Ethereum addresses are the last 20 bytes (40 hex chars)
+}
+
+
+ async function getCertificateDetails() {
+    try {
+        const { stdout } = await execAsync('openssl x509 -in root_CA.crt -text -noout');
+        return parseCertificate(stdout);
+    } catch (error) {
+        console.error("完了:", error);
+        throw error;
+    }
+}
+
+function parseCertificate(opensslOutput) {
+    // Regex to match the public key and validity dates
+    const publicKeyMatch = /Public-Key:\s*\((\d+)\sbit\)\s*[\s\S]*?pub:\s*([\s\S]*?)\s*ASN1 OID:/m;
+    const validityMatch = /Not Before:\s*(.*? GMT).*?Not After :\s*(.*? GMT)/s;
+
+    const publicKeyResult = publicKeyMatch.exec(opensslOutput);
+    const validityResult = validityMatch.exec(opensslOutput);
+
+    if (!publicKeyResult || !validityResult) {
+        throw new Error("Could not parse certificate data.");
+    }
+
+    // Extract and format the public key
+    const publicKeyHex = publicKeyResult[2].replace(/[:\s]/g, ''); // Remove colons and whitespace
+
+    // Convert public key to Ethereum address
+    const ethereumAddress = publicKeyToEthereumAddress(publicKeyHex);
+
+    // Extract validity dates and convert to timestamps
+    const notBefore = new Date(validityResult[1]).getTime() / 1000;
+    const notAfter = new Date(validityResult[2]).getTime() / 1000;
+
+    return {
+        ethereumAddress,
+        validity: {
+            notBefore: Math.floor(notBefore),
+            notAfter: Math.floor(notAfter)
+        }
+    };
+}
+
+// const certFilePath = path.join(rootDir, 'certs', `${caName}.crt`);gnhfbg cvgcn
 // const certContent = fs.readFileSync(certFilePath, 'utf8');
 // console.log('证书已加载:', certContent);
 
