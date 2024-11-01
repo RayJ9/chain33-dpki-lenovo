@@ -1,25 +1,21 @@
 const { ecsign, toBuffer, bufferToHex, ecrecover, pubToAddress, privateToPublic } = require('ethereumjs-util');
 const { keccak256 } = require('js-sha3');
-// function generateSignature(privateKeyHex, message) {
-//     // 将私钥转换为 Buffer 格式
-//     const privateKeyBuffer = Buffer.from(privateKeyHex.slice(2), 'hex');
+function generateSignature(privateKeyHex, message) {
+    const privateKeyBuffer = Buffer.from(privateKeyHex.slice(2), 'hex');
   
-//     // 计算消息的 Keccak 哈希
-//     const messageHash = Buffer.from(keccak256(message), 'hex');
+    const messageHash = Buffer.from(keccak256(message), 'hex');
   
-//     // 使用私钥对哈希进行签名
-//     const { r, s, v } = ecsign(messageHash, privateKeyBuffer);
+    const { r, s, v } = ecsign(messageHash, privateKeyBuffer);
   
-//     // 拼接 r, s, v 值，形成符合 Ethereum 签名格式的签名
-//     const signature = Buffer.concat([r, s, Buffer.from([v])]);
-//     return bufferToHex(signature);
-//   }
+    const signature = Buffer.concat([r, s, Buffer.from([v])]);
+    return bufferToHex(signature);
+  }
 
-//   const privateKeyHex = "0xfba5f29fb3818cfe382e98ae3f6db54c11a9d1dae4a004430b250664dc2d5a33";
-//   const messageToSign = "0x379f8d1a0639b0186b8fc86da2087b861b1a63ef";
+  const privateKeyHex = "0xfba5f29fb3818cfe382e98ae3f6db54c11a9d1dae4a004430b250664dc2d5a33";
+  const messageToSign = "0x379f8d1a0639b0186b8fc86da2087b861b1a63ef";
   
-//   const generatedSignature = generateSignature(privateKeyHex, messageToSign);
-//   console.log("Generated Signature (hex):", generatedSignature);
+  const generatedSignature = generateSignature(privateKeyHex, messageToSign);
+  console.log("Generated Signature (hex):", generatedSignature);
 
 // const { ecsign, toBuffer, bufferToHex, ecrecover, pubToAddress } = require('ethereumjs-util');
 // const { keccak256 } = require('js-sha3');

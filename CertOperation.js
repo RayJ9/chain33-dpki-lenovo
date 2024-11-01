@@ -1,17 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const Datastore = require('nedb');
 const { exec } = require('child_process');
-const Web3 = require('web3');
 const { keccak256 } = require('js-sha3');
-const ethers = require('ethers');
-// const { ecsign, toBuffer, bufferToHex, ecrecover, pubToAddress, privateToPublic } = require('ethereumjs-util');
+const { createClientConnection, handleClientEvents } = require('./client');
 
-const httpProvider = new Web3.providers.HttpProvider("http://121.248.50.247:8545"); //需要修改
 
-const web3 = new Web3(httpProvider);
-
+//openssl工具箱需要用cmd执行（js没有原生的包好像），载体
 function runCommand(command) {
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
@@ -24,11 +19,10 @@ function runCommand(command) {
   });
 }
 
-// 生产openssl的CA config文件
+//生成rootCA的config文件，视作服务器执行
 function generateRootConfig(ca_name, root_dir) {
   const filename = path.join(root_dir, `${ca_name}.cnf`);
 
-// 生成文件夹
   const dirs = [
     root_dir,
     path.join(root_dir, 'certs'),
@@ -98,13 +92,13 @@ subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid:always,issuer
 `;
 
-fs.writeFileSync(filename, rootConfigData);
+  fs.writeFileSync(filename, rootConfigData);
   console.log(`Configuration file generated: ${filename}`);
   return filename;
 }
 
 
-//该函数待迁移到客户端，功能大概为
+//生成UE的config文件,视作终端执行
 function generateUEConfig(ue_name, ue_dir, ue_psw) {
   const filename = path.join(ue_dir, `${ue_name}.cnf`);
 
@@ -146,8 +140,8 @@ fs.writeFileSync(filename, rootConfigData);
   return filename;
 }
 
-//CA证书生成
-async function generateKeyAndCert(ca_name, root_dir) {
+//CA证书生成，视作服务器执行
+async function caCertgeneration(ca_name, root_dir) {
   const configFile = generateRootConfig(ca_name, root_dir);
   //注意，openssl生成的key文件包含sk和pk，所以要把sk抓出来
   const privateKeyPath = path.join(root_dir, `private_key`, `${ca_name}.key`);
@@ -167,13 +161,7 @@ async function generateKeyAndCert(ca_name, root_dir) {
     } else {
       console.error('生成失败');
     }
-    //解锁钱包，如果没有钱包需要先创建钱包，bash命令如下：
-    // .\chain33-cli seed generate -l 0
-    // .\chain33-cli seed save -s '生产的助记词' -p 密码（要有字母+数字，牢记，不然要干掉整个钱包）
-    // .\chain33-cli wallet unlock -p 密码 -t 0
-    //不解锁的话不能创建账户
-    //这里和etehrum不同，第二个字段在链33里变成了label，所以账户不能重名
-    web3.eth.personal.importRawKey(HEXsk, 'ca1').then(console.log);
+
     await runCommand(`openssl req -new -x509 -key ${privateKeyPath} -out ${certPath} -days 365 -config ${configFile} -passin pass:mysecret`);
     console.log(`Certificate saved to: ${certPath}`);
     } catch (err) {
@@ -181,7 +169,8 @@ async function generateKeyAndCert(ca_name, root_dir) {
       }
     }
 
-async function UECSRgenerate(ue_name, ue_dir, ue_psw) {
+//UE证书请求生成，视作终端执行
+async function ueCSRgenerate(ue_name, ue_dir, ue_psw) {
   const configFile = generateUEConfig(ue_name, ue_dir, ue_psw);
   //注意，openssl生成的key文件包含sk和pk，所以要把sk抓出来
   const privateKeyPath = path.join(ue_dir, `private_key`, `${ue_name}.key`);
@@ -202,14 +191,14 @@ async function UECSRgenerate(ue_name, ue_dir, ue_psw) {
       console.error('生成失败');
     }
  
-    web3.eth.personal.importRawKey(HEXsk, 'ue2').then(console.log);
     await runCommand(`openssl req -new -key ${privateKeyPath} -config ${configFile} -out ${csrPath}`);
     console.log(`CSR file saved to: ${csrPath}`);
-    } catch (err) {
-      console.error('Error:', err);
-    }
- }
+  } catch (err) {
+    console.error('Error:', err);
+  }
+}
 
+//UE证书生成，视作服务器执行
 async function ueCertSignature(ca_name, root_dir, ue_name, ue_dir) {
 
   const csrPath = path.join(ue_dir, `certs`, `${ue_name}.csr`);
@@ -259,29 +248,37 @@ async function ueCertSignature(ca_name, root_dir, ue_name, ue_dir) {
   }
 }
 
-
+//从公钥中提取可用的以太坊地址，视作服务器执行
 function pkToAddress(publicKeyHex) {
-  const publicKeyBuffer = Buffer.from(publicKeyHex, 'hex');
-  const hash = ethers.utils.keccak256(publicKeyBuffer);
-  return `0x${hash.slice(-40)}`;
-
+  const publicKeyWithoutPrefix = publicKeyHex.slice(4);
+  const publicKeyBuffer = Buffer.from(publicKeyWithoutPrefix, 'hex');
+  const hashedPublicKey = keccak256(publicKeyBuffer);
+  return `0x${hashedPublicKey.slice(-40)}`;
 }
 
-
+//将pem格式的数字证书转化为可读格式，视作服务器执行
 async function getCertificateDetails(dir, name) {
   const CRTpath = path.join(dir, `certs`, `${name}.crt`);
-  
+  console.log(CRTpath);
   try {
+      const CertContent = fs.readFileSync(CRTpath, 'utf8');
       const stdout = await runCommand(`openssl x509 -in ${CRTpath} -text -noout`);
-      return parseCertificate(stdout);
+      const parsedDetails = parseCertificate(stdout);
+      console.log(parsedDetails)
+      return {
+        CertContent: CertContent,
+        ethereumAddress: parsedDetails.ethereumAddress,
+        notBefore: parsedDetails.notBefore,
+        notAfter: parsedDetails.notAfter
+      };
   } catch (error) {
-      console.error("Error executing OpenSSL command:", error);
+      console.error("寄了:", error);
       throw error;
   }
 }
 
+//提取证书中的字段
 function parseCertificate(opensslOutput) {
-  // Regex to match the public key and validity dates
   const publicKeyMatch = /Public-Key:\s*\((\d+)\sbit\)\s*[\s\S]*?pub:\s*([\s\S]*?)\s*ASN1 OID:/m;
   const validityMatch = /Not Before:\s*(.*? GMT).*?Not After :\s*(.*? GMT)/s;
 
@@ -289,50 +286,57 @@ function parseCertificate(opensslOutput) {
   const validityResult = validityMatch.exec(opensslOutput);
 
   if (!publicKeyResult || !validityResult) {
-      throw new Error("Could not parse certificate data.");
+      throw new Error("提取失败.");
   }
 
-  // Extract and format the public key
-  const publicKeyHex = publicKeyResult[2].replace(/[:\s]/g, ''); // Remove colons and whitespace
+  //转化成可读格式的256公钥
+  const publicKeyHex = `0x${publicKeyResult[2].replace(/[:\s]/g, '')}`;
+  console.log (publicKeyHex)
 
-  // Convert public key to Ethereum address
+  //转换
   const ethereumAddress = pkToAddress(publicKeyHex);
 
-  // Extract validity dates and convert to timestamps
+  //日期分界
   const notBefore = new Date(validityResult[1]).getTime() / 1000;
   const notAfter = new Date(validityResult[2]).getTime() / 1000;
 
   return {
       ethereumAddress,
-      validity: {
-          notBefore: Math.floor(notBefore),
-          notAfter: Math.floor(notAfter)
-      }
+      notBefore: Math.floor(notBefore),
+      notAfter: Math.floor(notAfter)
   };
 }
+// const caName = 'root_CA';
+// const ueName = 'UE';
+// const uepasswd = '123456';
+// const rootDir = path.join(`__dirname`, caName);
+// const ueDir = path.join(__dirname, ueName);
+
+// ueCSRgenerate(ueName, ueDir, uepasswd, 12346, '121.248.53.204');
 
 
-const caName = 'root_CA';
-const ueName = 'UE5';
-const uepasswd = '123456';
-const rootDir = path.join(__dirname, caName);
-const ueDir = path.join(__dirname, ueName);
+// (async () => {
+//   try {
+//       await UECSRgenerate(ueName, ueDir, uepasswd);
+//       await ueCertSignature(caName, rootDir, ueName, ueDir);
+//       const details = await getCertificateDetails(ueDir, ueName);
+//       console.log('Ethereum Address:', details.ethereumAddress);
+//       console.log('Validity:', details.validity);
+//   } catch (error) {
+//       console.error('Error:', error);
+//   }
+// })();
 
-(async () => {
-  try {
-      await UECSRgenerate(ueName, ueDir, uepasswd);
-      await ueCertSignature(caName, rootDir, ueName, ueDir);
-      const details = await getCertificateDetails(ueDir, ueName);
-      console.log('Ethereum Address:', details.ethereumAddress);
-      console.log('Validity:', details.validity);
-  } catch (error) {
-      console.error('Error:', error);
-  }
-})();
+module.exports = {
+  caCertgeneration,
+  ueCSRgenerate,
+  ueCertSignature,
+  getCertificateDetails
+};
 
 
 //CA 一步到位
-// generateKeyAndCert(caName, rootDir);
+// caCertgeneration(caName, rootDir);
 
 //UE暂时分两步（客户端分离）
 // UECSRgenerate(ueName, ueDir, uepasswd);
