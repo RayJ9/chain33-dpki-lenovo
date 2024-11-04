@@ -6,7 +6,7 @@ const { ecsign, toBuffer, bufferToHex } = require('ethereumjs-util');
 const { keccak256 } = require('js-sha3');
 const { exec } = require('child_process');
 
-const web3 = new Web3(new Web3.providers.HttpProvider("http://121.248.53.204:8545")); //主机ip
+const web3 = new Web3(new Web3.providers.HttpProvider("http://121.248.51.6:8545")); //主机ip
 
 var abi = JSON.parse(fs.readFileSync(path.join(__dirname, "./authentication.abi")).toString())
 var bytecode = fs.readFileSync(path.join(__dirname, "./authentication.code")).toString()
@@ -173,112 +173,112 @@ async function generateSignature(dir, name, address) {
 // console.log('证书已加载:', certContent);
 
 // 部署合约
-// deployContract();
-const contractAddress = '0x99c7FDb06Bf5832Ef13dCA9aa67Da8EfBE2Cba35';
+deployContract();
+// const contractAddress = '0x99c7FDb06Bf5832Ef13dCA9aa67Da8EfBE2Cba35';
 
-(async () => {
-    const action = process.argv[2];
+// (async () => {
+//     const action = process.argv[2];
 
-    if (action === 'initial') {
-        const caName = getArgValue('-ca_name');
-        const root_label = getArgValue('-ca_label');
-        const rootDir = path.join(__dirname, caName);
+//     if (action === 'initial') {
+//         const caName = getArgValue('-ca_name');
+//         const root_label = getArgValue('-ca_label');
+//         const rootDir = path.join(__dirname, caName);
 
-        await CertGenerate.caCertgeneration(caName, rootDir);
-        const certdetails = await CertGenerate.getCertificateDetails(rootDir, caName);
+//         await CertGenerate.caCertgeneration(caName, rootDir);
+//         const certdetails = await CertGenerate.getCertificateDetails(rootDir, caName);
   
-        console.log('Ethereum Address:', certdetails.ethereumAddress);
-        console.log('certcontent:', certdetails.CertContent);
-        console.log('Validity:', certdetails.notBefore);
-        console.log('Validity:', certdetails.notAfter);
+//         console.log('Ethereum Address:', certdetails.ethereumAddress);
+//         console.log('certcontent:', certdetails.CertContent);
+//         console.log('Validity:', certdetails.notBefore);
+//         console.log('Validity:', certdetails.notAfter);
   
-        await registerCertificate(
-          contractAddress,
-          root_label,
-          certdetails.ethereumAddress,
-          certdetails.CertContent,
-          certdetails.notBefore,
-          certdetails.notAfter
-        )
+//         await registerCertificate(
+//           contractAddress,
+//           root_label,
+//           certdetails.ethereumAddress,
+//           certdetails.CertContent,
+//           certdetails.notBefore,
+//           certdetails.notAfter
+//         )
 
-    } else if (action === 'register') {
-        const label = getArgValue('-ue_label');
-        const caName = getArgValue('-ca_name');
-        const ueName = getArgValue('-ue_name');
+//     } else if (action === 'register') {
+//         const label = getArgValue('-ue_label');
+//         const caName = getArgValue('-ca_name');
+//         const ueName = getArgValue('-ue_name');
 
-        const rootDir = path.join(__dirname, caName);
-        const ueDir = path.join(__dirname, ueName);
-        const uepasswd = '123456';
+//         const rootDir = path.join(__dirname, caName);
+//         const ueDir = path.join(__dirname, ueName);
+//         const uepasswd = '123456';
 
-        await CertGenerate.ueCSRgenerate(ueName, ueDir, uepasswd);
-        await CertGenerate.ueCertSignature(caName, rootDir, ueName, ueDir);
-        const certdetails = await CertGenerate.getCertificateDetails(ueDir, ueName);
+//         await CertGenerate.ueCSRgenerate(ueName, ueDir, uepasswd);
+//         await CertGenerate.ueCertSignature(caName, rootDir, ueName, ueDir);
+//         const certdetails = await CertGenerate.getCertificateDetails(ueDir, ueName);
 
-        console.log('Ethereum Address:', certdetails.ethereumAddress);
-        console.log('certcontent:', certdetails.CertContent);
-        console.log('Validity:', certdetails.notBefore);
-        console.log('Validity:', certdetails.notAfter);
+//         console.log('Ethereum Address:', certdetails.ethereumAddress);
+//         console.log('certcontent:', certdetails.CertContent);
+//         console.log('Validity:', certdetails.notBefore);
+//         console.log('Validity:', certdetails.notAfter);
 
-        await registerCertificate(
-          contractAddress,
-          label,
-          certdetails.ethereumAddress,
-          certdetails.CertContent,
-          certdetails.notBefore,
-          certdetails.notAfter
-        )
+//         await registerCertificate(
+//           contractAddress,
+//           label,
+//           certdetails.ethereumAddress,
+//           certdetails.CertContent,
+//           certdetails.notBefore,
+//           certdetails.notAfter
+//         )
 
-    } else if (action === 'update') {
-        const label = getArgValue('-ue_label');
-        const caName = getArgValue('-ca_name');
-        const ueName = getArgValue('-ue_name');
+//     } else if (action === 'update') {
+//         const label = getArgValue('-ue_label');
+//         const caName = getArgValue('-ca_name');
+//         const ueName = getArgValue('-ue_name');
 
-        const rootDir = path.join(__dirname, caName);
-        const ueDir = path.join(__dirname, ueName);
+//         const rootDir = path.join(__dirname, caName);
+//         const ueDir = path.join(__dirname, ueName);
 
-        await CertGenerate.ueCertSignature(caName, rootDir, ueName, ueDir);
-        const certdetails = await CertGenerate.getCertificateDetails(ueDir, ueName);
+//         await CertGenerate.ueCertSignature(caName, rootDir, ueName, ueDir);
+//         const certdetails = await CertGenerate.getCertificateDetails(ueDir, ueName);
   
-        console.log('Ethereum Address:', certdetails.ethereumAddress);
-        console.log('certcontent:', certdetails.CertContent);
-        console.log('Validity:', certdetails.notBefore);
-        console.log('Validity:', certdetails.notAfter);
+//         console.log('Ethereum Address:', certdetails.ethereumAddress);
+//         console.log('certcontent:', certdetails.CertContent);
+//         console.log('Validity:', certdetails.notBefore);
+//         console.log('Validity:', certdetails.notAfter);
   
-        await updateCertificate(
-          contractAddress,
-          label,
-          certdetails.ethereumAddress,
-          certdetails.CertContent,
-          certdetails.notBefore,
-          certdetails.notAfter
-        )
-    } else if (action === 'revoke') {
-        const label = getArgValue('-ue_label');
-        await revokeCertificate(
-            contractAddress,
-            label
-        )
-    } else if (action === 'verify') {
-        const label = getArgValue('-ue_label');
-        const ueName = getArgValue('-ue_name');
+//         await updateCertificate(
+//           contractAddress,
+//           label,
+//           certdetails.ethereumAddress,
+//           certdetails.CertContent,
+//           certdetails.notBefore,
+//           certdetails.notAfter
+//         )
+//     } else if (action === 'revoke') {
+//         const label = getArgValue('-ue_label');
+//         await revokeCertificate(
+//             contractAddress,
+//             label
+//         )
+//     } else if (action === 'verify') {
+//         const label = getArgValue('-ue_label');
+//         const ueName = getArgValue('-ue_name');
 
-        const ueDir = path.join(__dirname, ueName);
-        const certdetails = await CertGenerate.getCertificateDetails(ueDir, ueName);
-        const signedAssertion = await generateSignature (ueDir, ueName, certdetails.ethereumAddress);
-        console.log (signedAssertion);
+//         const ueDir = path.join(__dirname, ueName);
+//         const certdetails = await CertGenerate.getCertificateDetails(ueDir, ueName);
+//         const signedAssertion = await generateSignature (ueDir, ueName, certdetails.ethereumAddress);
+//         console.log (signedAssertion);
 
-        await verifyAll(
-          contractAddress,
-          signedAssertion,
-          certdetails.ethereumAddress,
-          label,
-          certdetails.ethereumAddress,
-          certdetails.CertContent
-        )
-    } else{
-        console.error('无效指令，有效指令包括initial、register、update、revoke、verify，till 11.1')
-    }
-})();
+//         await verifyAll(
+//           contractAddress,
+//           signedAssertion,
+//           certdetails.ethereumAddress,
+//           label,
+//           certdetails.ethereumAddress,
+//           certdetails.CertContent
+//         )
+//     } else{
+//         console.error('无效指令，有效指令包括initial、register、update、revoke、verify，till 11.1')
+//     }
+// })();
 
 
 //解锁钱包，如果没有钱包需要先创建钱包，bash命令如下：

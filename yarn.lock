@@ -1873,9 +1873,9 @@ jsprim@^1.2.2:
     json-schema "0.4.0"
     verror "1.10.0"
 
-keccak@^3.0.0:
+keccak@^3.0.0, keccak@^3.0.4:
   version "3.0.4"
-  resolved "https://registry.npmjs.org/keccak/-/keccak-3.0.4.tgz"
+  resolved "https://registry.npmmirror.com/keccak/-/keccak-3.0.4.tgz"
   integrity sha512-3vKuW0jV8J3XNTzvfyicFR5qvxrSAGl7KIhvgOu5cmWwM7tZRj3fMbj/pfIf4be7aznbc+prBWGjywox/g2Y6Q==
   dependencies:
     node-addon-api "^2.0.0"

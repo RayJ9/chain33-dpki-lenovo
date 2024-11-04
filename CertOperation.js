@@ -3,8 +3,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { exec } = require('child_process');
 const { keccak256 } = require('js-sha3');
-const { createClientConnection, handleClientEvents } = require('./client');
-
+// const { createClientConnection, handleClientEvents } = require('./client');
 
 //openssl工具箱需要用cmd执行（js没有原生的包好像），载体
 function runCommand(command) {
@@ -306,6 +305,7 @@ function parseCertificate(opensslOutput) {
       notAfter: Math.floor(notAfter)
   };
 }
+
 // const caName = 'root_CA';
 // const ueName = 'UE';
 // const uepasswd = '123456';

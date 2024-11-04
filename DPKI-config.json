@@ -1,0 +1,16 @@
+{
+  "Blockchain": {
+    "providerUrl": "http://121.248.51.6:8545",
+    "account": "0xab7F5238cbEfB02062241cf979e4994b656FB944",
+    "privateKey": "0x73e66f099144f820753aa3a5e131785b528081da572e16339fcd02de05de719e"
+  },
+  "contract": {
+    "abiPath": "./authentication.abi",
+    "bytecodePath": "./authentication.code",
+    "address": "0x99c7FDb06Bf5832Ef13dCA9aa67Da8EfBE2Cba35"
+  },
+  "Servernetwork": {
+    "serverHost": "121.248.51.6",
+    "serverPort": 12349
+  }
+}

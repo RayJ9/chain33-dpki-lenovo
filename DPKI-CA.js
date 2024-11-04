@@ -7,13 +7,41 @@ const { ecsign, toBuffer, bufferToHex } = require('ethereumjs-util');
 const { keccak256 } = require('js-sha3');
 const { exec } = require('child_process');
 
-const web3 = new Web3(new Web3.providers.HttpProvider("http://121.248.53.204:8545")); //主机ip
+const exeDir = process.pkg ? path.dirname(process.execPath) : __dirname;
 
-var abi = JSON.parse(fs.readFileSync(path.join(__dirname, "./authentication.abi")).toString())
-var bytecode = fs.readFileSync(path.join(__dirname, "./authentication.code")).toString()
+const config = JSON.parse(fs.readFileSync(path.join(exeDir, 'DPKI-config.json')).toString());
 
-const account = '0xab7F5238cbEfB02062241cf979e4994b656FB944'; //目前配置似乎不能是创世之外的地址
-const privateKey = '0x73e66f099144f820753aa3a5e131785b528081da572e16339fcd02de05de719e'; //对应私钥
+const web3 = new Web3(new Web3.providers.HttpProvider(config.Blockchain.providerUrl)); //主机ip
+
+// var abi = JSON.parse(fs.readFileSync(path.join(__dirname, "./authentication.abi")).toString())
+// var bytecode = fs.readFileSync(path.join(__dirname, "./authentication.code")).toString()
+
+// const account = '0xab7F5238cbEfB02062241cf979e4994b656FB944'; //目前配置似乎不能是创世之外的地址
+// const privateKey = '0x73e66f099144f820753aa3a5e131785b528081da572e16339fcd02de05de719e'; //对应私钥
+
+let abi;
+let bytecode;
+
+if (process.pkg) {
+    const abiPath = path.join(path.dirname(process.execPath), 'authentication.abi');
+    const bytecodePath = path.join(path.dirname(process.execPath), 'authentication.code');
+    abi = JSON.parse(fs.readFileSync(abiPath, 'utf8'));
+    bytecode = fs.readFileSync(bytecodePath, 'utf8');
+} else {
+    const abiPath = path.join(exeDir, config.contract.abiPath);
+    const bytecodePath = path.join(exeDir, config.contract.bytecodePath);
+    abi = JSON.parse(fs.readFileSync(abiPath, 'utf8'));
+    bytecode = fs.readFileSync(bytecodePath, 'utf8');
+}
+
+// var abi = JSON.parse(fs.readFileSync(path.join(__dirname, config.contract.abiPath)).toString());
+// var bytecode = fs.readFileSync(path.join(__dirname, config.contract.bytecodePath)).toString();
+
+const account = config.Blockchain.account; //目前配置似乎不能是创世之外的地址
+const privateKey = config.Blockchain.privateKey; //对应私钥
+
+const contractAddress = config.contract.address;
+
 
 //openssl工具箱需要用cmd执行（js没有原生的包好像），载体
 function runCommand(command) {
@@ -175,7 +203,7 @@ async function generateSignature(dir, name, address) {
 
 // 部署合约
 // deployContract();
-const contractAddress = '0x99c7FDb06Bf5832Ef13dCA9aa67Da8EfBE2Cba35';
+// const contractAddress = '0x99c7FDb06Bf5832Ef13dCA9aa67Da8EfBE2Cba35';
 
 (async () => {
     const action = process.argv[2];
@@ -183,7 +211,7 @@ const contractAddress = '0x99c7FDb06Bf5832Ef13dCA9aa67Da8EfBE2Cba35';
     if (action === 'initial') {
         const caName = getArgValue('-ca_name');
         const root_label = getArgValue('-ca_label');
-        const rootDir = path.join(__dirname, caName);
+        const rootDir = path.join(exeDir, caName);
 
         await CertGenerate.caCertgeneration(caName, rootDir);
         const certdetails = await CertGenerate.getCertificateDetails(rootDir, caName);
@@ -206,11 +234,14 @@ const contractAddress = '0x99c7FDb06Bf5832Ef13dCA9aa67Da8EfBE2Cba35';
         const caName = getArgValue('-ca_name');
         const ueName = getArgValue('-ue_name');
 
-        const PORT = 12348;
-        const HOST = '121.248.53.204';
+        // const PORT = 12348;
+        // const HOST = '121.248.54.226';
 
-        const rootDir = path.join(__dirname, caName);
-        const ueDir = path.join(__dirname, `tempUE_${ueName}`);
+        const uePORT = config[ueName].uePort;
+        const ueHOST = config[ueName].ueHost;
+
+        const rootDir = path.join(exeDir, caName);
+        const ueDir = path.join(exeDir, `tempUE_${ueName}`);
 
         // await CertGenerate.ueCSRgenerate(ueName, ueDir, uepasswd);
 
@@ -243,7 +274,7 @@ const contractAddress = '0x99c7FDb06Bf5832Ef13dCA9aa67Da8EfBE2Cba35';
             crt_content: crtContent
             }, null, 2);
 
-        const client = createClientConnection(PORT, HOST);
+        const client = createClientConnection(uePORT, ueHOST);
         handleClientEvents(client);
         client.write(`${message}`);
     
@@ -252,8 +283,8 @@ const contractAddress = '0x99c7FDb06Bf5832Ef13dCA9aa67Da8EfBE2Cba35';
         const caName = getArgValue('-ca_name');
         const ueName = getArgValue('-ue_name');
 
-        const rootDir = path.join(__dirname, caName);
-        const ueDir = path.join(__dirname, ueName);
+        const rootDir = path.join(exeDir, caName);
+        const ueDir = path.join(exeDir, `tempUE_${ueName}`);
 
         await CertGenerate.ueCertSignature(caName, rootDir, ueName, ueDir);
         const certdetails = await CertGenerate.getCertificateDetails(ueDir, ueName);
@@ -271,6 +302,7 @@ const contractAddress = '0x99c7FDb06Bf5832Ef13dCA9aa67Da8EfBE2Cba35';
           certdetails.notBefore,
           certdetails.notAfter
         )
+
     } else if (action === 'revoke') {
         const label = getArgValue('-ue_name');
         await revokeCertificate(
@@ -281,7 +313,7 @@ const contractAddress = '0x99c7FDb06Bf5832Ef13dCA9aa67Da8EfBE2Cba35';
         const label = getArgValue('-ue_label');
         const ueName = getArgValue('-ue_name');
 
-        const ueDir = path.join(__dirname, ueName);
+        const ueDir = path.join(exeDir, ueName);
         const certdetails = await CertGenerate.getCertificateDetails(ueDir, ueName);
         const signedAssertion = await generateSignature (ueDir, ueName, certdetails.ethereumAddress);
         console.log (signedAssertion);
@@ -294,8 +326,6 @@ const contractAddress = '0x99c7FDb06Bf5832Ef13dCA9aa67Da8EfBE2Cba35';
           certdetails.ethereumAddress,
           certdetails.CertContent
         )
-    } else{
-        console.error('无效指令，有效指令包括initial、register、update、revoke、verify，till 11.1')
     }
 })();
 

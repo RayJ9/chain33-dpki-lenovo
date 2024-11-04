@@ -7,13 +7,32 @@ const { ecsign, toBuffer, bufferToHex } = require('ethereumjs-util');
 const { keccak256 } = require('js-sha3');
 const { exec } = require('child_process');
 
-const web3 = new Web3(new Web3.providers.HttpProvider("http://121.248.53.204:8545")); //主机ip
+const exeDir = process.pkg ? path.dirname(process.execPath) : __dirname;
 
-var abi = JSON.parse(fs.readFileSync(path.join(__dirname, "./authentication.abi")).toString())
-var bytecode = fs.readFileSync(path.join(__dirname, "./authentication.code")).toString()
+const config = JSON.parse(fs.readFileSync(path.join(exeDir, 'DPKI-config.json')).toString());
 
-const account = '0xab7F5238cbEfB02062241cf979e4994b656FB944'; //目前配置似乎不能是创世之外的地址
-const privateKey = '0x73e66f099144f820753aa3a5e131785b528081da572e16339fcd02de05de719e'; //对应私钥
+console.log (config);
+
+const web3 = new Web3(new Web3.providers.HttpProvider(config.Blockchain.providerUrl)); //主机ip
+
+let abi;
+let bytecode;
+
+if (process.pkg) {
+    const abiPath = path.join(path.dirname(process.execPath), 'authentication.abi');
+    const bytecodePath = path.join(path.dirname(process.execPath), 'authentication.code');
+    abi = JSON.parse(fs.readFileSync(abiPath, 'utf8'));
+    bytecode = fs.readFileSync(bytecodePath, 'utf8');
+} else {
+    const abiPath = path.join(exeDir, config.contract.abiPath);
+    const bytecodePath = path.join(exeDir, config.contract.bytecodePath);
+    abi = JSON.parse(fs.readFileSync(abiPath, 'utf8'));
+    bytecode = fs.readFileSync(bytecodePath, 'utf8');
+}
+
+// const account = config.ethereum.account; //目前配置似乎不能是创世之外的地址
+// const privateKey = config.Blockchain.privateKey; //对应私钥
+const contractAddress = config.contract.address;
 
 //openssl工具箱需要用cmd执行（js没有原生的包好像），载体
 function runCommand(command) {
@@ -74,10 +93,9 @@ async function generateSignature(dir, name, address) {
 
 (async () => {
     const action = process.argv[2];
-    const PORT = 12349;
-    const HOST = '121.248.53.204';
-    const uePORT = 12348
-    const ueHOST = '121.248.53.204'
+    //server的端口和地址
+    const PORT = config.Servernetwork.serverPort;
+    const HOST = config.Servernetwork.serverHost;
 
     if (action === 'request') {
         // const label = getArgValue('-ue_label');
@@ -85,7 +103,7 @@ async function generateSignature(dir, name, address) {
         const ueName = getArgValue('-ue_name');
 
               
-        const ueDir = path.join(__dirname, ueName);
+        const ueDir = path.join(exeDir, ueName);
         const uepasswd = '123456';
         const csrPath = path.join(ueDir, `certs`, `${ueName}.csr`);
 
@@ -105,9 +123,11 @@ async function generateSignature(dir, name, address) {
 
     } else if (action === 'authenticationreq') {
         const ueName = getArgValue('-ue_name');
+        const targetName = getArgValue('-target');
+        const uePORT = config[targetName].uePort;
+        const ueHOST = config[targetName].ueHost;
 
-
-        const ueDir = path.join(__dirname, ueName);
+        const ueDir = path.join(exeDir, ueName);
         const certdetails = await CertGenerate.getCertificateDetails(ueDir, ueName);
         const signedAssertion = await generateSignature(ueDir, ueName, certdetails.ethereumAddress);
         const crtpath = path.join(ueDir, `certs`, `${ueName}.crt`);
@@ -128,34 +148,24 @@ async function generateSignature(dir, name, address) {
         client.write(`${message}`);
 
 
-    } else if (action === 'verify') {
-        // const label = getArgValue('-ue_label');
-        const ueName = getArgValue('-ue_name');
-        const signedAssertion = getArgValue('-assertion')
+    } else if (action === 'updatelist') {
+        const client = createClientConnection(PORT, HOST);
+        handleClientEvents(client);
 
-        const ueDir = path.join(__dirname, ueName);
-        const certdetails = await CertGenerate.getCertificateDetails(ueDir, ueName);
-        // const signedAssertion = await generateSignature (ueDir, ueName, certdetails.ethereumAddress);
-        // console.log (signedAssertion);
+        const message = JSON.stringify({
+        type: "updatelist",
+        }, null, 2);
+        client.write(`${message}`);
 
-        await verifyAll(
-          contractAddress,
-          signedAssertion,
-          certdetails.ethereumAddress,
-          ueName,
-          certdetails.ethereumAddress,
-          certdetails.CertContent
-        )
 
-    } else if (action === 'assertion') {
-        const ueName = getArgValue('-ue_name');
-        const ueDir = path.join(__dirname, ueName);
-        const signedAssertion = await generateSignature (ueDir, ueName, certdetails.ethereumAddress);
-        console.log (signedAssertion);
+    } 
+    //    else if (action === 'assertion') {
+    //     const ueName = getArgValue('-ue_name');
+    //     const ueDir = path.join(__dirname, ueName);
+    //     const signedAssertion = await generateSignature (ueDir, ueName, certdetails.ethereumAddress);
+    //     console.log (signedAssertion);
 
-    } else {
-        console.error('无效指令，有效指令包括initial、register、update、revoke、verify，till 11.1')
-    }
+    // }
 })();
 
 module.exports = {

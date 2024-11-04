@@ -1,4 +1,8 @@
 const net = require('net');
+const path = require('path');
+const fs = require('fs');
+
+const exeDir = process.pkg ? path.dirname(process.execPath) : __dirname;
 
 
 function createClientConnection(PORT, HOST) {
@@ -9,10 +13,28 @@ function createClientConnection(PORT, HOST) {
     return client;
 }
 
+function isJsonString(str) {
+    try {
+        JSON.parse(str);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
 function handleClientEvents(client) {
     client.on('data', (data) => {
-        console.log('Received from server:', data.toString());
-        client.end();
+        const response = data.toString();
+        if (isJsonString(response)) {
+            const jsonResponse = JSON.parse(response);
+            const filePath = path.join(exeDir, 'DPKI-config.json');
+            fs.writeFileSync(filePath, JSON.stringify(jsonResponse, null, 2), 'utf8');
+            console.log(`Configuration updated and saved to ${filePath}`);
+            client.end();
+        } else {
+            console.log('收到消息:', data.toString());
+            client.end();
+        }
     });
 
     client.on('end', () => {

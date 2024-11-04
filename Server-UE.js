@@ -1,30 +1,22 @@
 const net = require('net');
-// const path = require('path');
-// const fs = require('fs');
 const { verifyAll } = require('./DPKI-UE');
-// const Web3 = require('web3');
 const CertGenerate = require('./CertOperation');
-// const { ecsign, toBuffer, bufferToHex } = require('ethereumjs-util');
-// const { keccak256 } = require('js-sha3');
-// const { exec } = require('child_process');
 
 const Web3 = require('web3');
 const fs = require('fs');
 const path = require('path');
-// const CertGenerate = require('./CertOperation');
 const { ecsign, toBuffer, bufferToHex } = require('ethereumjs-util');
 const { keccak256 } = require('js-sha3');
 const { exec } = require('child_process');
 
-const contractAddress = '0x99c7FDb06Bf5832Ef13dCA9aa67Da8EfBE2Cba35';
 
-const web3 = new Web3(new Web3.providers.HttpProvider("http://121.248.53.204:8545")); //主机ip
+const exeDir = process.pkg ? path.dirname(process.execPath) : __dirname;
 
-var abi = JSON.parse(fs.readFileSync(path.join(__dirname, "./authentication.abi")).toString())
-var bytecode = fs.readFileSync(path.join(__dirname, "./authentication.code")).toString()
+const config = JSON.parse(fs.readFileSync(path.join(exeDir, 'DPKI-config.json')).toString());
 
-const account = '0xab7F5238cbEfB02062241cf979e4994b656FB944'; //目前配置似乎不能是创世之外的地址
-const privateKey = '0x73e66f099144f820753aa3a5e131785b528081da572e16339fcd02de05de719e'; //对应私钥
+// const account = config.ethereum.account; //目前配置似乎不能是创世之外的地址
+// const privateKey = config.Blockchain.privateKey; //对应私钥
+const contractAddress = config.contract.address;
 
 // const verifyAll = async (contractAddress, signedAssertion, message, label, certAddress, inputCert) => {
 //     try {
@@ -42,11 +34,6 @@ const privateKey = '0x73e66f099144f820753aa3a5e131785b528081da572e16339fcd02de05
 const PORT = 12348;
 const HOST = '0.0.0.0';
 
-// const web3 = new Web3(new Web3.providers.HttpProvider("http://121.248.53.204:8545")); //主机ip
-
-// const account = '0xab7F5238cbEfB02062241cf979e4994b656FB944'; //目前配置似乎不能是创世之外的地址
-// const privateKey = '0x73e66f099144f820753aa3a5e131785b528081da572e16339fcd02de05de719e'; //对应私钥
-
 const server = net.createServer((socket) => {
     console.log('New client connected:', socket.remoteAddress, socket.remotePort);
     let receivedData = '';
@@ -60,7 +47,7 @@ const server = net.createServer((socket) => {
                 console.log(ueName);
                 const crtContent = message.crt_content;
                 console.log(crtContent);
-                const crtDir = path.join(__dirname, `${ueName}`, `certs`, `${ueName}.crt`);
+                const crtDir = path.join(exeDir, `${ueName}`, `certs`, `${ueName}.crt`);
              
                 fs.writeFile(crtDir, crtContent, (err) => {
                     if (err) {
@@ -80,7 +67,7 @@ const server = net.createServer((socket) => {
                 const certContent = message.crt_content;
                 console.log(certContent);
 
-                const crtDir1 = path.join(__dirname, `auth_${ueName}`);
+                const crtDir1 = path.join(exeDir, `auth_${ueName}`);
                 
                 if (!fs.existsSync(crtDir1)) {
                     fs.mkdirSync(crtDir1);
@@ -100,7 +87,8 @@ const server = net.createServer((socket) => {
                                 const certdetails = await CertGenerate.getCertificateDetails(crtDir1, ueName);
                                 address = certdetails.ethereumAddress;
                                 console.log ()
-                                await verifyAll(contractAddress, Assertion, address, ueName, address, certContent);
+                                result = await verifyAll(contractAddress, Assertion, address, ueName, address, certContent);
+                                socket.write(result);
                         })();
                     }
                 });
@@ -132,13 +120,13 @@ const server = net.createServer((socket) => {
     });
 });
 
-async function getaddress(dir, name){
-    const certdetails = CertGenerate.getCertificateDetails(dir, name);
-    console.log('Ethereum Address:', certdetails.ethereumAddress);
-    console.log('certcontent:', certdetails.CertContent);
-    console.log('Validity:', certdetails.notBefore);
-    console.log('Validity:', certdetails.notAfter);
-}
+// async function getaddress(dir, name){
+//     const certdetails = CertGenerate.getCertificateDetails(dir, name);
+//     console.log('Ethereum Address:', certdetails.ethereumAddress);
+//     console.log('certcontent:', certdetails.CertContent);
+//     console.log('Validity:', certdetails.notBefore);
+//     console.log('Validity:', certdetails.notAfter);
+// }
 
 server.listen(PORT, HOST, () => {
     console.log(`Server listening on ${HOST}:${PORT}`);
