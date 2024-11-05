@@ -111,11 +111,11 @@ CA侧包含Server-CA和DPKI-CA两个可执行，UE侧包含Server-UE和DPKI-UE�
   
 6. CA撤销证书     （CA端 to UE端）
 ```
-./DPKI-CA revoke -ca_name string                    
+./DPKI-CA revoke -ca_name string -ue_name string                    
 //最直观的撤销，可以明显看出证书在验证时失效      ##待开发，UE侧暂时不会收到通知，但是不会影响其他逻辑
 ```
   
-7. UE更新地址列表   （CA端 to UE端 然后反过来）
+7. UE更新地址列表   （CA端 to UE端）
 ```
 ./DPKI-UE updatelist                                 
 //更新ue本地的DPKI-config，不然找不到了        ##这个功能还需要很多进一步开发。比如，这个玩意事实上应该放链上，其次，它应该还要带一个标识，写上证书目前的状态。但是现在暂时先这样，暂时只作为一个从CA获取其他UE地址的途径
