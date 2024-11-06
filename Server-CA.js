@@ -48,11 +48,11 @@ const server = net.createServer((socket) => {
                 const filePath = path.join(csrDir2, `${ueName}.csr`);
                 fs.writeFile(filePath, csrContent, (err) => {
                     if (err) {
-                        console.error('存储失败:', err);
-                        socket.write('存储CSR失败');
+                        console.error('Store CSR failed:', err);
+                        socket.write('Store CSR failed');
                     } else {
-                        console.log(`CSR已收到:${filePath}`);
-                        socket.write('CSR已收到，等待证书颁发');
+                        console.log(`CSR received:${filePath}`);
+                        socket.write('CSR received, waiting for issue certificate');
                     }
                 });
             }

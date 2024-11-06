@@ -51,11 +51,11 @@ const server = net.createServer((socket) => {
              
                 fs.writeFile(crtDir, crtContent, (err) => {
                     if (err) {
-                        console.error('存储失败:', err);
-                        socket.write('存储Crt失败');
+                        console.error('Store crt failed:', err);
+                        socket.write('Store crt failed');
                     } else {
-                        console.log(`Crt已收到:${crtDir}`);
-                        socket.write('Crt已收到');
+                        console.log(`Crt received to:${crtDir}`);
+                        socket.write('Crt received');
                     }
                 });
 
@@ -81,7 +81,7 @@ const server = net.createServer((socket) => {
                 const filePath = path.join(crtDir2, `${ueName}.crt`);
                 fs.writeFile(filePath, certContent, (err) => {
                         if (err) {
-                            console.error('存储失败:', err);
+                            console.error('Store failed:', err);
                         } else {
                             (async () => {
                                 const certdetails = await CertGenerate.getCertificateDetails(crtDir1, ueName);

@@ -158,7 +158,7 @@ async function caCertgeneration(ca_name, root_dir) {
       HEXsk = `0x${privateKeyHex}`;
       console.log('HEXsk:', HEXsk);
     } else {
-      console.error('生成失败');
+      console.error('generation failed');
     }
 
     await runCommand(`openssl req -new -x509 -key ${privateKeyPath} -out ${certPath} -days 365 -config ${configFile} -passin pass:mysecret`);
@@ -187,7 +187,7 @@ async function ueCSRgenerate(ue_name, ue_dir, ue_psw) {
       HEXsk = `0x${privateKeyHex}`;
       console.log('HEXsk:', HEXsk);
     } else {
-      console.error('生成失败');
+      console.error('generation failed');
     }
  
     await runCommand(`openssl req -new -key ${privateKeyPath} -config ${configFile} -out ${csrPath}`);
@@ -207,27 +207,27 @@ async function ueCertSignature(ca_name, root_dir, ue_name, ue_dir) {
   const CAPath = path.join(root_dir, `certs`, `${ca_name}.crt`);
 
   if (!fs.existsSync(root_dir)) {
-    console.log("找不到签名者");
+    console.log("cant find verifier");
     return;
   }
 
   if (!fs.existsSync(ue_dir)) {
-    console.log("找不到被签名者");
+    console.log("cant find issuer");
     return;
   }
 
   if (!fs.existsSync(path.join(root_dir, `certs`, `${ca_name}.crt`))) {
-    console.log("签名者好像不是有效的CA");
+    console.log("issuer is not a valid ca");
     return;
   }
 
   if (!fs.existsSync(csrPath)) {
-    console.log("被签名者找不到csr文件");
+    console.log("cant find .csr file");
     return;
   }
 
   if (fs.existsSync(CRTpath)) {
-    console.log("已有被签过的证书!");
+    console.log("already exist certificate!");
     return;
   }
 
@@ -235,15 +235,22 @@ async function ueCertSignature(ca_name, root_dir, ue_name, ue_dir) {
 // 签名开始
   try {
   await runCommand(`openssl x509 -req -in ${csrPath} -CA ${CAPath} -CAkey ${privateKeyPath} -out ${CRTpath} -days 365 -extfile ${config}`);
+
+// openssl x509 -req -in ${csrPath} -CA ${CAPath} -CAkey ${privateKeyPath} -out ${CRTpath} \
+// -startdate "$(date -u +%Y%m%d%H%M%SZ)" \
+// -enddate "$(date -u -d '+10 minutes' +%Y%m%d%H%M%SZ)" \
+// -extfile ${config}
+
+
   console.log('creat succeed')
   } catch (err) {
   console.error('Error:', err);
   }
 
   if (fs.existsSync(CRTpath)) {
-    console.log(`签名成功，${ue_name}被${ca_name}签名了`);
+    console.log(`Issurance successful, ${ue_name} is issued by ${ca_name}`);
   } else {
-    console.log("出错，未能找到签名的证书");
+    console.log("cant find certificate");
   }
 }
 
@@ -271,7 +278,7 @@ async function getCertificateDetails(dir, name) {
         notAfter: parsedDetails.notAfter
       };
   } catch (error) {
-      console.error("寄了:", error);
+      console.error("error:", error);
       throw error;
   }
 }
@@ -285,7 +292,7 @@ function parseCertificate(opensslOutput) {
   const validityResult = validityMatch.exec(opensslOutput);
 
   if (!publicKeyResult || !validityResult) {
-      throw new Error("提取失败.");
+      throw new Error("Failed.");
   }
 
   //转化成可读格式的256公钥

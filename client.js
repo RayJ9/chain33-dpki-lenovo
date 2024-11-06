@@ -32,7 +32,7 @@ function handleClientEvents(client) {
             console.log(`Configuration updated and saved to ${filePath}`);
             client.end();
         } else {
-            console.log('收到消息:', data.toString());
+            console.log('Message received:', data.toString());
             client.end();
         }
     });

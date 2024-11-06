@@ -53,7 +53,7 @@ function getArgValue(key) {
     if (index > -1 && process.argv.length > index + 1) {
         return process.argv[index + 1];
     }
-    throw new Error(`缺少必要的参数: ${key}`);
+    throw new Error(`Miss arg: ${key}`);
 }
 
 const verifyAll = async (contractAddress, signedAssertion, message, label, certAddress, inputCert) => {
@@ -61,11 +61,11 @@ const verifyAll = async (contractAddress, signedAssertion, message, label, certA
         const contract = new web3.eth.Contract(abi, contractAddress);
 
         const allValid = await contract.methods.verifyAll(signedAssertion, message, label, certAddress, inputCert).call();
-        console.log('验证结果是:', allValid);
+        console.log('Result is:', allValid);
         return allValid;
 
     } catch (err) {
-        console.error('寄了:', err);
+        console.error('error:', err);
     }
 };
 

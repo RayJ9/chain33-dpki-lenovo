@@ -62,7 +62,7 @@ function getArgValue(key) {
     if (index > -1 && process.argv.length > index + 1) {
         return process.argv[index + 1];
     }
-    throw new Error(`缺少必要的参数: ${key}`);
+    throw new Error(`args miss: ${key}`);
 }
 
 const registerCertificate = async (contractAddress, label, certAddress, certData, notBefore, notAfter) => {
@@ -83,11 +83,11 @@ const registerCertificate = async (contractAddress, label, certAddress, certData
         );
 
         const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-        console.log('证书已存储，回执:', receipt);
+        console.log('Certificate saved:', receipt);
         return receipt;
 
     } catch (err) {
-        console.error('寄了:', err);
+        console.error('error:', err);
     }
 };
 
@@ -108,11 +108,11 @@ const updateCertificate = async (contractAddress, label, certAddress, certData, 
             privateKey
         );
         const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-        console.log('证书已更新，回执:', receipt);
+        console.log('Certificate updated:', receipt);
         return receipt;
 
     } catch (err) {
-        console.error('寄了:', err);
+        console.error('error:', err);
     }
 };
 
@@ -134,11 +134,11 @@ const revokeCertificate = async (contractAddress, label) => {
         );
 
         const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-        console.log('证书已撤销，回执:', receipt);
+        console.log('Certificate revoked:', receipt);
         return receipt;
 
     } catch (err) {
-        console.error('寄了:', err);
+        console.error('error:', err);
     }
 };
 
@@ -147,11 +147,11 @@ const verifyAll = async (contractAddress, signedAssertion, message, label, certA
         const contract = new web3.eth.Contract(abi, contractAddress);
 
         const allValid = await contract.methods.verifyAll(signedAssertion, message, label, certAddress, inputCert).call();
-        console.log('验证结果是:', allValid);
+        console.log('Verification result:', allValid);
         return allValid;
 
     } catch (err) {
-        console.error('寄了:', err);
+        console.error('error:', err);
     }
 };
 
@@ -161,7 +161,7 @@ const deployContract = async () => {
    
      const contractdeploy = contract.deploy({
        data: bytecode,
-       arguments: ["干!"],
+       arguments: ["a"],
      });
  
    const createTransaction = await web3.eth.accounts.signTransaction(
