@@ -87,7 +87,7 @@ CA侧包含Server-CA和DPKI-CA两个可执行，UE侧包含Server-UE和DPKI-UE�
   
 2.初始化root证书并上链：（CA端） 
 ```
-./DPKI-CA inital -ca_name string -ca_label string  
+./DPKI-CA initial -ca_name string -ca_label string  
 //一般来说这两个是相同的，label用于在链上注册时的key，value则是证书信息等，所以一般来说label和name需要保持一致，但是由于CA特殊性预留了自定义label的功能
 ```
   
