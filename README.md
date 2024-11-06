@@ -76,7 +76,7 @@ A listener has been set up on both the UE side and the CA side. This listener al
 ### 2. Initialize the root certificate and upload it on-chain (CA):
 
 ```
-./DPKI-CA inital -ca_name string -ca_label string  
+./DPKI-CA initial -ca_name string -ca_label string  
 ```
 The ```string``` in the commands represents a placeholder and needs to be replaced with the actual name or value. 
 
