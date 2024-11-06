@@ -103,7 +103,7 @@ The logic is similar to register, but update allows overwriting an existing cert
   
 ### 6. CA revokes the certificate (CA to UE):
 ```
-./DPKI-CA revoke -ca_name string -ue_name string                     
+./DPKI-CA revoke -ue_name string                     
 ```
 This will invalidate the certificate upon verification.
   
